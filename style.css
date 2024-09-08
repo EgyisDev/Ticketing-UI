@@ -1,0 +1,178 @@
+.w-14{
+    width: 14%;
+}
+
+.hidden{
+    display: none;
+}
+
+.booking-card{
+	background-color: aliceblue;
+	box-shadow: 0 4px 12px #0000001a;
+}
+
+.bookingSection{
+    box-shadow: 0 4px 12px #0000001a;
+}
+
+.TripDetailsTitle{
+	position: relative;
+    left: 140px;
+}
+
+
+.booking-card-bottom{
+    display: flow-root;
+    background-color: aliceblue;
+    /* border: 2px solid rgb(253, 89, 89); */
+}
+.tripData .form-control{
+	border: 0;
+}
+
+/* .tripData{
+    border: 1px solid #dbdee8;
+	border-radius: 8px;
+	height: 45px;
+	padding: 3px;
+} */
+
+select.form-control{
+	appearance: auto;
+	-webkit-appearance: auto;
+}
+
+/* .drob-down-icon{
+	position: absolute;
+	top: 45px;
+    right: 20px;
+} */
+
+.datesData{
+    background-color: black;
+    width: 56%;
+    position: relative;
+    left: 402px;
+}
+
+/* input.fromDate{
+	position: relative;
+}
+
+input.fromDate::after{
+	content: "|";
+    position: absolute;
+    top: -2px;
+    left: 190px;
+    color: #dbdee8;
+    font-size: 25px;
+    font-weight: 200;
+} */
+
+.next-prv-btns{
+    bottom: -35px;
+}
+
+.passengersDataSpan{
+    position: absolute;
+    width: fit-content;
+    top: 5px;
+    left: 20px;
+}
+
+input.PassengersDataInput::placeholder{
+    font-size: 15px;
+}
+
+.removeRow i:hover{
+    color: red;
+}
+
+.is-invalid {
+    border: 2px solid red;
+}
+
+.is-valid {
+    border: 2px solid green;
+}
+
+
+.passengersDataCard{
+	background-color: aliceblue;
+	box-shadow: 0 4px 12px #0000001a;
+}
+
+
+.paymentsSection{
+	background-color: aliceblue;
+	box-shadow: 0 4px 12px #0000001a;
+}
+
+.paymentsSectionTitle{
+	position: relative;
+    left: -145px;
+}
+
+
+/* wizard */
+
+.wizard,
+.wizard .nav-tabs,
+.wizard .nav-tabs .nav-item {
+	position: relative;
+}
+.wizard .nav-tabs:after {
+	content: "";
+	width: 80%;
+	border-bottom: solid 2px #ccc;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: 38%;
+	z-index: -1;
+}
+.wizard .nav-tabs .nav-item .nav-link {
+	width: 70px;
+	height: 70px;
+	margin-bottom: 6%;
+	background: white;
+	border: 2px solid #ccc;
+	color: #ccc;
+	z-index: 10;
+}
+.wizard .nav-tabs .nav-item .nav-link:hover {
+	color: #333;
+	border: 2px solid #333;
+}
+.wizard .nav-tabs .nav-item .nav-link.active {
+	background: #fff;
+	border: 2px solid #0dcaf0;
+	color: #0dcaf0;
+}
+.wizard .nav-tabs .nav-item .nav-link:after {
+	content: " ";
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	opacity: 0;
+	margin: 0 auto;
+	bottom: 0px;
+	border: 5px solid transparent;
+	border-bottom-color: #0dcaf0;
+	transition: 0.1s ease-in-out;
+}
+
+.nav-tabs .nav-item .nav-link.active:after {
+	content: " ";
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	opacity: 1;
+	margin: 0 auto;
+	bottom: 0px;
+	border: 10px solid transparent;
+	border-bottom-color: #0dcaf0;
+}
+.wizard .nav-tabs .nav-item .nav-link svg {
+	font-size: 25px;
+}
