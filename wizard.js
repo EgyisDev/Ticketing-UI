@@ -22,7 +22,12 @@ $(document).ready(function () {
 			.closest("li")
 			.prev("li")
 			.find("a")[0];
-		const prevTab = new bootstrap.Tab(prevTabLinkEl);
-		prevTab.show();
+			const prevTab = new bootstrap.Tab(prevTabLinkEl);
+			prevTab.show();
+		if(prevTab._element.attributes[1].nodeValue=="#step1"){
+			document.getElementById("bookingSection").classList.remove("d-none")
+		}else if(prevTab._element.attributes[1].nodeValue=="#step2"){
+			document.getElementById("flightInfoSection").classList.remove("d-none")
+		}
 	});
 });

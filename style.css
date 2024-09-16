@@ -2,6 +2,10 @@
     width: 14%;
 }
 
+.w-fit-content{
+    width: fit-content;
+}
+
 .hidden{
     display: none;
 }
@@ -15,38 +19,22 @@
     box-shadow: 0 4px 12px #0000001a;
 }
 
-.TripDetailsTitle{
-	position: relative;
-    left: 140px;
-}
-
 
 .booking-card-bottom{
     display: flow-root;
     background-color: aliceblue;
-    /* border: 2px solid rgb(253, 89, 89); */
 }
-.tripData .form-control{
+
+.tripData .form-control , .rowData .form-control{
 	border: 0;
 }
 
-/* .tripData{
-    border: 1px solid #dbdee8;
-	border-radius: 8px;
-	height: 45px;
-	padding: 3px;
-} */
 
 select.form-control{
 	appearance: auto;
 	-webkit-appearance: auto;
 }
 
-/* .drob-down-icon{
-	position: absolute;
-	top: 45px;
-    right: 20px;
-} */
 
 .datesData{
     background-color: black;
@@ -55,19 +43,9 @@ select.form-control{
     left: 402px;
 }
 
-/* input.fromDate{
-	position: relative;
+.calender-btn{
+	right: 12px
 }
-
-input.fromDate::after{
-	content: "|";
-    position: absolute;
-    top: -2px;
-    left: 190px;
-    color: #dbdee8;
-    font-size: 25px;
-    font-weight: 200;
-} */
 
 .next-prv-btns{
     bottom: -35px;
@@ -76,8 +54,21 @@ input.fromDate::after{
 .passengersDataSpan{
     position: absolute;
     width: fit-content;
-    top: 5px;
+    top: 38px;
     left: 20px;
+}
+
+.passengersDetails i{
+	bottom: 9px;
+	right: 15px;
+}
+
+.header-text{
+	font-size: 13px;
+}
+
+.flightInfo{
+	background-color: aliceblue;
 }
 
 input.PassengersDataInput::placeholder{
@@ -92,6 +83,11 @@ input.PassengersDataInput::placeholder{
     border: 2px solid red;
 }
 
+
+.tripData .form-control.is-invalid  , .rowData .form-control.is-invalid {
+    border: 2px solid red;
+}
+
 .is-valid {
     border: 2px solid green;
 }
@@ -102,15 +98,34 @@ input.PassengersDataInput::placeholder{
 	box-shadow: 0 4px 12px #0000001a;
 }
 
-
 .paymentsSection{
 	background-color: aliceblue;
 	box-shadow: 0 4px 12px #0000001a;
 }
 
-.paymentsSectionTitle{
-	position: relative;
-    left: -145px;
+.confermationSection{
+	background-color: aliceblue;
+	box-shadow: 0 4px 12px #0000001a;
+}
+
+.circle{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background: aliceblue;
+    border: 3px solid green;
+    color: green;
+}
+
+
+.fromDateValue , .toDateValue{
+	bottom: -30px;
+	left: 0;
+	z-index: 5;
+}
+
+.total-body{
+	border-top: 3px solid teal
 }
 
 
@@ -176,3 +191,118 @@ input.PassengersDataInput::placeholder{
 .wizard .nav-tabs .nav-item .nav-link svg {
 	font-size: 25px;
 }
+
+/* media query */
+
+
+@media (max-width: 576px){
+
+	.TripDetailsTitle{
+		position: relative;
+		left: 0%;
+	}
+	.flightInfoSectionTitle{
+		position: relative;
+		left: 26%;
+	}
+	.paymentsSectionTitle{
+		position: relative;
+		left: 53%;
+	}
+	.confermationSectionTitle{
+		position: relative;
+		left: 64%;
+	}
+}
+@media (min-width: 576px){
+
+	.TripDetailsTitle{
+		position: relative;
+		left: 0%;
+	}
+	.flightInfoSectionTitle{
+		position: relative;
+		left: 26%;
+	}
+
+	.paymentsSectionTitle{
+		position: relative;
+		left: 53%;
+	}
+
+	.confermationSectionTitle{
+		position: relative;
+		left: 71%;
+	}
+}
+
+@media (min-width: 768px){
+
+	.TripDetailsTitle{
+		position: relative;
+		left: 3%;
+	}
+
+	.flightInfoSectionTitle{
+		position: relative;
+		left: 29%;
+	}
+
+	.paymentsSectionTitle{
+		position: relative;
+		left: 55%;
+	}
+
+	.confermationSectionTitle{
+		position: relative;
+		left: 74%;
+	}
+}
+
+@media (min-width: 992px){
+
+	.TripDetailsTitle{
+		position: relative;
+		left: 5%;
+	}
+
+	.flightInfoSectionTitle{
+		position: relative;
+		left: 30%;
+	}
+
+	.paymentsSectionTitle{
+		position: relative;
+		left: 57%;
+	}
+
+	.confermationSectionTitle{
+		position: relative;
+		left: 77%;
+	}
+}
+
+
+@media (min-width: 1200px){
+
+	.TripDetailsTitle{
+		position: relative;
+		left: 6%;
+	}
+	.flightInfoSectionTitle{
+		position: relative;
+		left: 32%;
+	}
+
+	.paymentsSectionTitle{
+		position: relative;
+		left: 58%;
+	}
+
+	.confermationSectionTitle{
+		position: relative;
+		left: 79%;
+	}
+}
+
+

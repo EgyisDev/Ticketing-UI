@@ -4,7 +4,6 @@ const adultsCounterText = document.getElementById("adultsCounter");
 const childsCounterText = document.getElementById("childsCounter");
 const infantCounterText = document.getElementById("infantsCounter");
 const fromDate = document.getElementById("fromDate");
-let toDate = document.getElementById("toDate");
 const adultsController = document.querySelector(".adults-controller");
 const childsController = document.querySelector(".childs-controller");
 const infantsController = document.querySelector(".infants-controller");
@@ -27,12 +26,15 @@ const salesPreson = document.getElementById("selectSalesPerson").value || null
 const fromCountry = document.getElementById("fromCountry").value
 const toCountry = document.getElementById("toCountry").value
 const flightInfo = document.getElementById("flightInfo")
+const multiCityData = document.getElementById("multiCityData")
 let isPassengersUpdated = false
 let firstTime = true
 let paymentTotalCost = document.getElementById("paymentTotalCost")
 let paymentTotalSellingPrice = document.getElementById("paymentTotalSellingPrice")
 
 const DetermineThevaluePaid = document.getElementById("DetermineThevaluePaid")
+const printBtn = document.getElementById("print-btn")
+
 
 let totalCostPrice = 0
 let totalSallingPrice = 0
@@ -95,35 +97,37 @@ const removePassenger = (type) => {
 
 const toggleDateInputs = (value) => {
     if (value === "OneWay"){
-        // toDate.classList.add("d-none");
-        document.querySelector("input.toDate").setAttribute("type" , "hidden")
-        document.querySelector(".toDate").classList.add("d-none")
         rowData.classList.add("d-none");
         addRowdiv.classList.add("d-none")
         tripeType = "OneWay"
-        toDate.value = null
-        toDate.removeAttribute("required")
+        flatpickr(".fromDate", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+        document.querySelector(".toDateLabel").classList.add("d-none")
+        fromDate.value = ""
+        fromDate.placeholder = "Select Date"
+        document.querySelector('.fromDateValue').innerHTML =  ""
+        document.querySelector('.toDateValue').innerHTML =  ""
         updateFlightInfo()
     } else if (value === "roundTrip") {
-        // toDate.classList.remove("d-none");
-        document.querySelector("input.toDate").setAttribute("type" , "date")
-        document.querySelector(".toDate").classList.remove("d-none")
         rowData.classList.add("d-none");
         addRowdiv.classList.add("d-none")
         tripeType = "roundTrip"
-        toDate.value = ""
-        toDate.setAttribute("required" , "required")
+        flatpickr(".fromDate", {mode: "range",minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+        document.querySelector(".toDateLabel").classList.remove("d-none")
+        fromDate.value = ""
+        fromDate.placeholder = "Select Date"
+        document.querySelector('.fromDateValue').innerHTML =  ""
+        document.querySelector('.toDateValue').innerHTML =  ""
         updateFlightInfo()
     } else if (value === "multiCity") {
-        // toDate.classList.add("d-none");
-        document.querySelector("input.toDate").setAttribute("type" , "hidden")
-        document.querySelector(".toDate").classList.add("d-none")
         rowData.classList.remove("d-none");
         addRowdiv.classList.remove("d-none")
         rowData.innerHTML = createRowData(1);
+        fromDate.value = ""
+        fromDate.placeholder = "Select Date"
+        document.querySelector('.fromDateValue').innerHTML =  ""
+        document.querySelector('.toDateValue').innerHTML =  ""
         tripeType = "multiCity"
-        toDate.value = null
-        toDate.removeAttribute("required")
+        document.querySelector(".toDateLabel").classList.add("d-none")
         updateFlightInfo()
     }
 };
@@ -131,51 +135,54 @@ const toggleDateInputs = (value) => {
 
 
 const createRowData = (rowIndex) => `
-    <div class="d-block d-flex mb-3 row-data" data-row-index="${rowIndex}">
-        <div class="col-3 me-2">
-            <select class="fromCountry form-control me-2" name="fromCountry" required>
-                <option value="" disabled selected hidden>From</option>
-                <option value="cairo">Cairo</option>
-                <option value="Alex">Alex</option>
-                <option value="Aswan">Aswan</option>
-            </select>
+<div class="row align-items-center mb-3 row-data gy-3" data-row-index="${rowIndex}">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <select class="fromCountry form-control me-2" name="fromCountry" required>
+            <option value="" disabled selected hidden>From</option>
+            <option value="cairo">Cairo</option>
+            <option value="Alex">Alex</option>
+            <option value="Aswan">Aswan</option>
+        </select>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <select class="toCountry form-control me-2" name="toCountry" required>
+            <option value="" disabled selected hidden>To</option>
+            <option value="cairo">Cairo</option>
+            <option value="Alex">Alex</option>
+            <option value="Aswan">Aswan</option>
+        </select>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 px-lg-0">
+        <div class="fromDate">
+            <div class="d-flex flatpickr align-items-center position-relative">
+            <input class="fromDate flatpickr-input form-control" type="text" placeholder="Select Date" name="fromDate" value=""  data-input required>                                        
+        
+            <a class="input-button calender-btn position-absolute" title="toggle" data-toggle>
+                <i class="fa-regular fa-calendar text-dark fs-5"></i>
+            </a>
+        
         </div>
-        <div class="col-3 me-2">
-            <select class="toCountry form-control me-2" name="toCountry" required>
-                <option value="" disabled selected hidden>To</option>
-                <option value="cairo">Cairo</option>
-                <option value="Alex">Alex</option>
-                <option value="Aswan">Aswan</option>
-            </select>
-        </div>
-        <div class="dateGroup col-2 me-2">
-                <input class="fromDate form-control me-2 d-block" type="date" name="fromDate" required>
-        </div>
-        <div class="col-3 d-flex justify-content-start align-items-center">
-            <div class="removeRow d-none">
-                <i onClick="deleteRow(event)" class="fa-solid fa-x p-3"></i>
-            </div>
         </div>
     </div>
+    <div class="col-md-3 col-sm-12  d-flex justify-content-sm-end align-items-center">
+        <div class="removeRow d-none">
+            <i onClick="deleteRow(event)" class="fa-solid fa-x p-3"></i>
+        </div>
+    </div>
+</div>
 `;
 
 
 const addRow = () => {
-    // Get the container where rows will be added
     const rowData = document.getElementById('rowData');
 
-    // Get the current row count
     const rowCount = document.querySelectorAll('.row-data').length;
 
-    // Generate new row HTML with an updated index
     const newRowHTML = createRowData(rowCount);
 
-    // Append the new row to the container without affecting existing rows
     rowData.insertAdjacentHTML('beforeend', newRowHTML);
 
-    // Update flight information (if necessary)
     updateFlightInfo()
-    // Reapply CSS to hide the delete icon for the first row only
     const rows = document.querySelectorAll('.row-data');
     rows.forEach((row, index) => {
         const removeRow = row.querySelector('.removeRow');
@@ -192,33 +199,25 @@ const addRow = () => {
 
 const deleteRow = (event) => {
     if (event.target.classList.contains('fa-x')) {
-        // Find the closest row element
-        const row = event.target.closest('.d-block.d-flex.mb-3');
+        const row = event.target.closest('.row.row-data');
 
         if (row) {
-            // Find the index of the row to be deleted
             const rowIndex = Array.from(row.parentElement.children).indexOf(row);
 
-            // Check the number of remaining rows
             const rowDataContainer = document.getElementById('rowData');
-            const remainingRows = rowDataContainer.querySelectorAll('.d-block.d-flex.mb-3').length;
-            // Allow row deletion only if more than one row is present
+            const remainingRows = rowDataContainer.querySelectorAll('.row.row-data').length;
             if (remainingRows > 1) {
-                // Remove the row from the DOM
                 row.remove();
                 updateFlightInfo()
-                // Remove the corresponding entry from multicityDataList
                 if (tripeType === "multiCity") {
                     multicityDataList.splice(rowIndex, 1);
                 }
 
-                // Reorder remaining rows in multicityDataList if necessary
                 for (let i = rowIndex; i < multicityDataList.length; i++) {
-                    multicityDataList[i].rowIndex = i; // Optional: Update row index if needed
+                    multicityDataList[i].rowIndex = i;
                 }
 
-                // Optionally, update UI or perform other actions here
-                checkFirstRow(); // Call this function to update UI or state if needed
+                checkFirstRow();
             } else {
                 console.warn("Cannot delete the last row.");
             }
@@ -253,52 +252,128 @@ const updateFlightInfo = () => {
     const fromCountry = document.getElementById("fromCountry").value;
     const toCountry = document.getElementById("toCountry").value;
     const fromDate = document.getElementById("fromDate").value;
-    const toDate = document.getElementById("toDate").value || null;
     const adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
     const childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
     const infanti = document.querySelectorAll('#passengersRow .passengerType[type="infant"]').length;
     
 
-    // Clear the previous flight info
     flightInfo.innerHTML = '';
-
+    const dateArray = fromDate.trim().split(" ")
+    const departureDate = dateArray[0]
+    let returnDate = dateArray[2]
+    if(returnDate == undefined){
+        returnDate = null 
+    }
 
     if (tripeType === "multiCity") {
-        multicityDataList = []; // Reset list for new trip type
-
+        multicityDataList = [];
+        const headerArray = []
+        multiCityData.innerHTML= ""
+        flightInfo.innerHTML=`<div class="row">
+        ${CompanyName != null  ? 
+        `<div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+        </div>` : ""}
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Customer Name: </span>${CustomerName}</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Branch Name: </span>${branch}</p>
+        </div>
+        ${salesPerson != null  ? `
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+        </div>`: ""}
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Trip Type: </span>MultiCity</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            ${passengersSum > 1 ? `<p class="header-text w-auto m-0"><span class="header-text fw-bold">Passengers: </span>${passengersSum}</p>` : `<p class="header-text w-auto m-0"><span class="fw-bold">Passenger: </span>${passengersSum}</p>`}
+        </div>
+            </div>`
         rowCount.forEach(row =>{
-            const tripe = {
+            let tripe = {}
+            flatpickr(".fromDate", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+            tripe = {
                 fromCountry: row.querySelector(`.fromCountry`).value,
                 toCountry: row.querySelector(`.toCountry`).value,
-                fromDate: row.querySelector(`.fromDate`).value,
+                fromDate: row.querySelector(`.fromDate.flatpickr-input`).value,
             };
-            multicityDataList.push(tripe);
+            headerArray.push(tripe)
 
             flightInfo.innerHTML += `
-                <p class="w-auto m-0"><span class="fw-bold">From: </span>${tripe.fromCountry}</p>
-                <p class="w-auto m-0"><span class="fw-bold">To: </span>${tripe.toCountry}</p>
-                <p class="w-auto m-0 position-relative"><span class="fw-bold">Date: </span>${tripe.fromDate}</p>
-                // 
+            <div class="row">
+                    <div class="col">
+                        <p class="w-auto m-0 header-text"><span class="fw-bold">From: </span>${tripe.fromCountry}</p>
+                    </div>
+                    <div class="col">
+                        <p class="w-auto m-0 header-text"><span class="fw-bold">To: </span>${tripe.toCountry}</p>
+                    </div>
+                    <div class="col">
+                        <p class="w-auto m-0 header-text"><span class="fw-bold">Departure Date: </span>${tripe.fromDate}</p>
+                    </div>
+            </div>
             `;
+
+
+            multiCityData.innerHTML += `
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">From: </span>${tripe.fromCountry}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">To: </span>${tripe.toCountry}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Departure Date: </span>${tripe.fromDate}</p>
+                                    </div>
+                                </div>
+            `
         })
 
 
     } else {
-        flightInfo.innerHTML = `
-            ${CompanyName != null  ? `<p class="w-auto m-0"><span class="fw-bold">Company Name: </span>${CompanyName}</p>` : ""}
-            <p class="w-auto m-0"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
-            <p class="w-auto m-0"><span class="fw-bold">Branch: </span>${branch}</p>
-            ${salesPerson != null  ? `<p class="w-auto m-0"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>` : ""}
-            <p class="w-auto m-0"><span class="fw-bold">Trip Type: </span>${tripeType}</p>
-            <p class="w-auto m-0"><span class="fw-bold">From: </span>${fromCountry}</p>
-            <p class="w-auto m-0"><span class="fw-bold">To: </span>${toCountry}</p>
-            ${tripeType === "roundTrip" ? `<p class="w-auto m-0"><span class="fw-bold">Dates: </span>${fromDate} - ${toDate}</p>` : `<p class="w-auto m-0"><span class="fw-bold">Date: </span>${fromDate}</p>`}
-            ${passengersSum > 1 ? `<p class="w-auto m-0"><span class="fw-bold">Passengers: </span>${passengersSum}</p>` : `<p class="w-auto m-0"><span class="fw-bold">Passenger: </span>${passengersSum}</p>`}
-        `;
+
+        if(tripeType == "OneWay"){
+            tripeType = "One Way"
+        }else if(tripeType == "roundTrip"){
+            tripeType = "Round Trip"
+        }
+
+
+        flightInfo.innerHTML=`<div class="row">
+        ${CompanyName != null  ? `
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+        </div>` : ""}
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Customer Name: </span>${CustomerName}</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Branch Name: </span>${branch}</p>
+        </div>
+        ${salesPerson != null  ? `
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+        </div>` : ""}
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Trip Type: </span>${tripeType}</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="w-auto m-0"><span class="header-text fw-bold">From: </span>${fromCountry}</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            <p class="w-auto m-0"><span class="header-text fw-bold">To: </span>${toCountry}</p>
+        </div>
+        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+            ${passengersSum > 1 ? `<p class="header-text w-auto m-0"><span class="header-text fw-bold">Passengers: </span>${passengersSum}</p>` : `<p class="header-text w-auto m-0"><span class="fw-bold">Passenger: </span>${passengersSum}</p>`}
+        </div>
+            </div>`
+
     }
 
     if(isPassengersUpdated || firstTime){
-        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, toDate, passengersSum, multicityDataList , adulti , childi , infanti);
+        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, passengersSum, multicityDataList , adulti , childi , infanti);
         isPassengersUpdated = false
         firstTime = false
     }
@@ -307,7 +382,7 @@ const updateFlightInfo = () => {
 
 
 
-const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, toDate, passengersSum  , multicityDataList , adulti , childi , infanti) => {
+const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, passengersSum  , multicityDataList , adulti , childi , infanti) => {
     let cartoona = '';
     let itrationBox = "";
     let totalCostPrice = 0;
@@ -328,55 +403,68 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
                     <div class="dataInputs">
-                        <div class="row p-4">
-                            <table>
-                                <tbody>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                        <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                            <option value="" disabled selected hidden>Choose Supplier</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                        <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                    </tr>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                        <td class="p-2"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                        <td class="p-2"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="d-flex align-items-start flex-column p-2">
-                                            <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                            <div class="notesContainer w-75">
-                                                <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 d-flex flex-column">
-                                            <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                            <div class="AttachmentsContainer">
-                                                <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row p-4 gy-3">
+                                        <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
                         </div>
                     </div>
                     <div class="hidenFields">
@@ -386,7 +474,6 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <input type="hidden" id="branchName${generatedId}" value="${branch}">
                         <input type="hidden" id="salesPreson${generatedId}" value="${salesPerson}">
                         <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
-                        <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                         <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                         ${itrationBox}
                     </div>
@@ -400,53 +487,67 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
                     <div class="dataInputs">
                         <div class="row p-4">
-                                <tbody>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                        <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                            <option value="" disabled selected hidden>Choose Supplier</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                        <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                    </tr>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 fw-bold"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                        <td class="p-2 fw-bold"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                        <td class="p-2 fw-bold"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="d-flex align-items-start flex-column p-2">
-                                                <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                                <div class="notesContainer w-75">
-                                                    <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                                </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 d-flex flex-column">
-                                            <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                            <div class="AttachmentsContainer">
-                                                <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
                         </div>
                     </div>
                     <div class="hidenFields">
@@ -459,7 +560,6 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                         <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
                         <input type="hidden" id="fromDate${generatedId}" value="${fromDate}">
-                        <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                         <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                         ${itrationBox}
                     </div>
@@ -474,54 +574,63 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
                     <div class="dataInputs">
                         <div class="row p-4">
-                            <table>
-                                <tbody>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                        <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                            <option value="" disabled selected hidden>Choose Supplier</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            </select>
-                                        </td>
-                                        <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                        <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                    </tr>
-                                    <tr> 
-                                        <td><label class="pb-0 ps-3 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                        <td><label class="pb-0 ps-3 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                        <td class="p-2"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                        <td class="p-2"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="d-flex align-items-start flex-column p-2">
-                                            <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                            <div class="notesContainer w-75">
-                                                <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 d-flex flex-column">
-                                            <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                            <div class="AttachmentsContainer">
-                                                <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row gy-3">
+                <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+            </div>
                         </div>
                     </div>
                     <div class="hidenFields">
@@ -531,10 +640,9 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <input type="hidden" id="branchName${generatedId}" value="${branch}">
                         <input type="hidden" id="salesPreson${generatedId}" value="${salesPerson}">
                         <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
- fw-bold                        <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
+                        <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                         <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
                         <input type="hidden" id="fromDate${generatedId}" value="${fromDate}">
-                        <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                         <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                         ${itrationBox}
                     </div>
@@ -551,56 +659,69 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
                 <div class="dataInputs">
                     <div class="row p-4">
-                        <table>
-                            <tbody>
-                                <tr> 
-                                    <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                    <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                        <option value="" disabled selected hidden>Choose Supplier</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                    <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                </tr>
-                                <tr> 
-                                    <td><label class="pb-0 ps-3 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                    <td class="p-2"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                    <td class="p-2"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                </tr>
-                                    <tr>
-                                        <td class="d-flex align-items-start flex-column p-2">
-                                            <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                            <div class="notesContainer w-75">
-                                                <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 d-flex flex-column">
-                                            <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                            <div class="AttachmentsContainer">
-                                                <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                            </div>
-                                        </td>
-                                    </tr>
-                            </tbody>
-                        </table>
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
                     </div>
                 </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
+                        </div>
+                    </div>
                 <div class="hidenFields">
                     <input type="hidden" id="type${generatedId}" value="adult">
                     <input type="hidden" id="CompanyName${generatedId}" value="${CompanyName}">
@@ -611,7 +732,6 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                     <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
                     <input type="hidden" id="fromDate${generatedId}" value="${fromDate}">
-                    <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                     <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                 </div>
             </div>
@@ -624,56 +744,69 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
                 <div class="dataInputs">
                     <div class="row p-4">
-                        <table>
-                            <tbody>
-                                <tr> 
-                                    <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                    <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                        <option value="" disabled selected hidden>Choose Supplier</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        </select>
-                                    </td>
-                                    <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                    <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                </tr>
-                                <tr> 
-                                    <td><label class="pb-0 ps-3 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                    <td><label class="pb-0 ps-3 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                    <td class="p-2"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                    <td class="p-2"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                </tr>
-                                    <tr>
-                                        <td class="d-flex align-items-start flex-column p-2">
-                                            <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                            <div class="notesContainer w-75">
-                                                <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-2 d-flex flex-column">
-                                            <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                            <div class="AttachmentsContainer">
-                                                <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                            </div>
-                                        </td>
-                                    </tr>
-                            </tbody>
-                        </table>
+                                    <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-contpplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
                     </div>
                 </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
+                        </div>
+                    </div>
                 <div class="hidenFields">
                     <input type="hidden" id="type${generatedId}" value="child">
                     <input type="hidden" id="CompanyName${generatedId}" value="${CompanyName}">
@@ -684,7 +817,6 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                     <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
                     <input type="hidden" id="fromDate${generatedId}" value="${fromDate}">
-                    <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                     <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                 </div>
             </div>
@@ -699,56 +831,69 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                             <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
                             <div class="dataInputs">
                                 <div class="row p-4">
-                                    <table>
-                                        <tbody>
-                                            <tr> 
-                                                <td><label class="pb-0 ps-3 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label></td>
-                                                <td><label class="pb-0 ps-3 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label></td>
-                                                <td><label class="pb-0 ps-3 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                                <td><label class="pb-0 ps-3 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-2"><input class="form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name"></td>
-                                                <td class="p-2"><select class="form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                                                    <option value="" disabled selected hidden>Choose Supplier</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    </select>
-                                                </td>
-                                                <td class="p-2"><input class="form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}"></td>
-                                                <td class="p-2"><input class="form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price"></td>
-                                            </tr>
-                                            <tr> 
-                                                <td><label class="pb-0 ps-3 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label></td>
-                                                <td><label class="pb-0 ps-3 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                                <td><label class="pb-0 ps-3 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="p-2"><input class="form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate"></td>
-                                                <td class="p-2"><input class="form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number"></td>
-                                                <td class="p-2"><input class="form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="d-flex align-items-start flex-column p-2">
-                                                    <label class="p-2 fw-bold" for="notes">Notes:</label>
-                                                    <div class="notesContainer w-75">
-                                                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <tr>
-                                            <td class="p-2 d-flex flex-column">
-                                                <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
-                                                <div class="AttachmentsContainer">
-                                                    <input class="form-control" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="name">Name: <span class="text-danger fw-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
+                    <select class="p-2 form-contpplier" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="costPrice">Cost Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="sellingPrice">Selling Price: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                </div>
+            </div>
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="theGate">The Gate: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <label class="pb-0 ps-1 fw-bold" for="seatNumber">Seat Number: <span class="text-danger fw-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 fw-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 fw-bold" for="attachments">Attachments: <span class="text-danger fw-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
+                        </div>
+                    </div>
                             <div class="hidenFields">
                                 <input type="hidden" id="type${generatedId}" value="infant">
                                 <input type="hidden" id="CompanyName${generatedId}" value="${CompanyName}">
@@ -759,7 +904,6 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                                 <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                                 <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
                                 <input type="hidden" id="fromDate${generatedId}" value="${fromDate}">
-                                <input type="hidden" id="toDate${generatedId}" value="${toDate}">
                                 <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                             </div>
                         </div>
@@ -769,10 +913,8 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
     
     }
 
-    // Append generated HTML to the container
 
 
-    // Calculate the total cost and selling prices
     const costPriceElements = document.querySelectorAll("input[name='costPrice']");
     const sellingPriceElements = document.querySelectorAll("input[name='sellingPrice']");
 
@@ -834,13 +976,21 @@ const calculateTotalPrices = () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Toggle the visibility of the dropdown list when the input is clicked
     passengersDataInput.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevents click from closing the dropdown immediately
+        event.stopPropagation();
         passengersDataList.classList.toggle('d-none');
     });
     
-    // Close the dropdown if clicking outside of it
+    document.addEventListener('click', (event) => {
+        if (passengersDataList && !passengersDataList.contains(event.target) && !passengersDataInput?.contains(event.target)) {
+            passengersDataList.classList.add('d-none');
+        }
+    });
+    document.querySelector(".passengersDetails i").addEventListener('click', (event) => {
+        event.stopPropagation();
+        passengersDataList.classList.toggle('d-none');
+    });
+    
     document.addEventListener('click', (event) => {
         if (passengersDataList && !passengersDataList.contains(event.target) && !passengersDataInput?.contains(event.target)) {
             passengersDataList.classList.add('d-none');
@@ -860,13 +1010,11 @@ radioBtns.forEach(radioBtn => radioBtn.addEventListener("change", (event) => tog
 
 
 addTableRowBtn.addEventListener("click", function() {
-    // Create a new row element
-    const row = document.createElement('tr');
+    let  row = document.createElement('tr');
 
-    // Add the HTML content to the row
     const generatedId = Math.floor(Math.random()*1000)
     row.innerHTML = `
-        <td>
+            <td>
             <select class="treasury form-control me-2" name="treasury" id="treasury${generatedId}">
                 <option value="" disabled selected hidden>Select From The List</option>
                 <option value="cairo">cairo</option>
@@ -874,8 +1022,8 @@ addTableRowBtn.addEventListener("click", function() {
                 <option value="Aswan">Aswan</option>
             </select>
         </td>     
-        <td><input type="number" class="amount form-control w-100" name="amount" min="0" id="amount${generatedId}"></td>
-        <td><input type="text" class="note form-control w-100" name="note" id="note${generatedId}"></td>
+        <td><input autocomplete="off" type="number" class="amount form-control w-100" name="amount" autocomplete="off" min="0" id="amount${generatedId}"></td>
+        <td><input autocomplete="off" type="text" class="note form-control w-100" name="note" autocomplete="off" id="note${generatedId}"></td>
         <td class="background-transparent">
             <div class="removeRow">
                 <i class="fa-solid fa-x p-3"></i>
@@ -883,65 +1031,30 @@ addTableRowBtn.addEventListener("click", function() {
         </td>
     `;
 
-    // Append the new row to the table body
+
     tbody.appendChild(row);
 
     updateAmountValue()
 
-    // Add event listener for the remove button in the newly added row
     row.querySelector('.removeRow').addEventListener('click', function() {
         row.remove();
+        updateAmountValue()
     });
 });
 
 
-// const deleteRoww = (event) => {
-//     if (event.target.classList.contains('fa-x')) {
-//         // Find the closest row element
-//         const row = event.target.closest('.d-block.d-flex.mb-3');
 
-//         if (row) {
-//             // Find the index of the row to be deleted
-//             const rowIndex = Array.from(row.parentElement.children).indexOf(row);
-
-//             // Check the number of remaining rows
-//             const rowDataContainer = document.getElementById('rowData');
-//             const remainingRows = rowDataContainer.querySelectorAll('.d-block.d-flex.mb-3').length;
-
-//             // Allow row deletion only if more than one row is present
-//             if (remainingRows > 1) {
-//                 // Remove the row from the DOM
-//                 row.remove();
-//                 updateFlightInfo()
-//                 // Remove the corresponding entry from multicityDataList
-//                 if (tripeType === "multiCity") {
-//                     multicityDataList.splice(rowIndex, 1);
-//                 }
-
-//                 // Reorder remaining rows in multicityDataList if necessary
-//                 for (let i = rowIndex; i < multicityDataList.length; i++) {
-//                     multicityDataList[i].rowIndex = i; // Optional: Update row index if needed
-//                 }
-
-//                 // Optionally, update UI or perform other actions here
-//                 checkFirstRow(); // Call this function to update UI or state if needed
-//             } else {
-//                 console.warn("Cannot delete the last row.");
-//             }
-//         }
-//     }
-// };
 
 
 function getMultiCityTrip(){
     if (tripeType === "multiCity") {
-        multicityDataList = []; // Reset list for new trip type
+        multicityDataList = []; 
         const rowCount = document.querySelectorAll('.row-data').length;
         for (let i = 0; i < rowCount; i++) {
             const tripe = {
                 fromCountry: document.querySelector(`[data-row-index="${i}"] .fromCountry`).value,
                 toCountry: document.querySelector(`[data-row-index="${i}"] .toCountry`).value,
-                fromDate: document.querySelector(`[data-row-index="${i}"] .fromDate`).value,
+                departureDate: document.querySelector(`[data-row-index="${i}"] .fromDate.flatpickr-input`).value,
             };
             multicityDataList.push(tripe);
         }
@@ -984,8 +1097,14 @@ amountInputs.forEach(input =>{
 })
 
 
+
 function updateAmountValue(){
     const amountInputs = document.querySelectorAll('input[name="amount"]')
+
+    if(!amountInputs.length){
+        DetermineThevaluePaid.value = 0
+    }
+
     amountInputs.forEach(input =>{
         input.addEventListener("change" , function(){
             amountSum = 0
@@ -994,37 +1113,23 @@ function updateAmountValue(){
             }
             DetermineThevaluePaid.value = amountSum
         })
+        amountSum = 0
+        for(let i = 0 ; i < amountInputs.length ; i++){
+            amountSum += Number(amountInputs[i].value)
+        }
+        DetermineThevaluePaid.value = amountSum
     })
 }
 
-    const sections = document.querySelectorAll('.section');
-    let currentSectionIndex = 0;
-
-    function showSection(index) {
-        sections.forEach((section, i) => {
-            section.classList.toggle('hidden', i !== index);
-        });
-        currentSectionIndex = index;
-    }
-
-    document.querySelectorAll('.back-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            if (currentSectionIndex > 0) {
-                showSection(currentSectionIndex - 1);
-                passengersList = []
-            }
-        });
-    });
 
     const nextToFlightInfoBtn = document.getElementById('nextToFlightInfo');
     const finishBtn = document.querySelector('.finish-btn');
     function validateBookingSection() {
         const div = document.getElementById('reservationForm');
         const selects = document.querySelectorAll('.booking-card select[required]');
-        const inputs = div.querySelectorAll('input[type="date"][required]');
+        const inputs = div.querySelectorAll('input[type="date"][required] , input[type="text"][required]');
         let isValid = true;
 
-        // Check all select elements
         selects.forEach(select => {            
             if (select.value === "" || select.value == null) {
                 isValid = false;
@@ -1033,7 +1138,7 @@ function updateAmountValue(){
                 select.classList.remove('is-invalid');
             }
         });
-        // Check all input elements
+
         inputs.forEach(input => {
             if (tripeType == "roundTrip" && (input.value == "" || input.value == null)) {
                 isValid = false;
@@ -1045,6 +1150,11 @@ function updateAmountValue(){
                 input.classList.remove('is-invalid')
             }
         });
+        const dateArray = fromDate.value.trim().split(" ")
+        if(tripeType == "roundTrip" && dateArray.length == 1){
+            document.querySelector('.fromDate.flatpickr-input').classList.add('is-invalid');
+            isValid = false;
+        }
         return isValid;
     }
 
@@ -1056,7 +1166,6 @@ function updateAmountValue(){
         let isValid = true;
 
 
-        // Check all select elements
         selects.forEach(select => {
             if (select.value === "" || select.value === null ) {
                 isValid = false;
@@ -1066,7 +1175,6 @@ function updateAmountValue(){
             }
         });
 
-        // Check all input elements
         inputs.forEach(input => {
             if (input.value.trim() === "") {
                 isValid = false;
@@ -1085,20 +1193,16 @@ function updateAmountValue(){
         const amounts = form.querySelectorAll('input[name="amount"]');
         let isValid = true;
     
-        // Create an array to store the pairs of select and amount elements
         const pairs = [];
     
-        // Populate pairs array
         selects.forEach((select, index) => {
             const amount = amounts[index];
             pairs.push({ select, amount });
         });
     
-        // Check all pairs for validity
         pairs.forEach(pair => {
             const { select, amount } = pair;
             
-            // Validate select and corresponding amount
             if ((select.value === "" || select.value === null) && (amount.value.trim() !== "")) {
                 isValid = false;
                 select.classList.add('is-invalid');
@@ -1114,55 +1218,59 @@ function updateAmountValue(){
         return isValid;
     }
 
+    fromDate.addEventListener("change", function(){
+            let dateArray = fromDate.value.split(" ")
+            if(dateArray[2]==undefined){
+                dateArray[2] = ""
+            }
+            const departureDate = dateArray[0]
+            document.querySelector('.fromDateValue').innerHTML = dateArray[0]
+            const returnDate = dateArray[2]
+            document.querySelector('.toDateValue').innerHTML = dateArray[2]
+        if(fromDate.value == "" || fromDate.value == null || fromDate.value == undefined){
+            fromDate.placeholder = "Select Date";
+        }
+    })
 
-    function showAlert(message) {
-        alert(message); // Basic alert, you can customize this to show messages in a better way
-    }
+
+
 
     nextToFlightInfoBtn.addEventListener('click', function() {
-        // debugger
         if (validateBookingSection()) {
             updateFlightInfo()
-            // document.getElementById('bookingSection').classList.add('hidden');
-            // document.getElementById('flightInfoSection').classList.remove('hidden');1
-            // $(".next").click(function () {
                 const nextTabLinkEl = $(".nav-tabs a[href = '#step2']")
                 const nextTab = new bootstrap.Tab(nextTabLinkEl);
                 nextTab.show();
-            // });
-        }else{
-            showAlert("invalid")
+                document.getElementById("bookingSection").classList.add("d-none")
         }
     });
 
     nextToPayments.addEventListener('click', function() {
         if (validateflightInfoSection()) {
-            // document.getElementById('flightInfoSection').classList.add('hidden');
-            // document.getElementById('paymentsSection').classList.remove('hidden');
-            // $(".next").click(function () {
                 const nextTabLinkEl = $(".nav-tabs a[href = '#step3']")
                 const nextTab = new bootstrap.Tab(nextTabLinkEl);
                 nextTab.show();
-            // });
-            // showSection(2);
+                document.getElementById("flightInfoSection").classList.add("d-none")
             const { totalCostPrice, totalSellingPrice } = calculateTotalPrices();
             paymentTotalCost.value = totalCostPrice;
             paymentTotalSellingPrice.value = totalSellingPrice;
-            // getMultiCityTrip()
-        }else{
-            showAlert("invalid")
         }
     });
 
     finishBtn.addEventListener('click', function() {
         if (validatepaymentsSection()) {
-            // Assuming getFinalData() is a function that returns the final data object
-            const fileData = getFinalData(); // Ensure this is a function call
+            const fileData = getFinalData();
             const fileNumberr = fileData.FileNumber;
             const reservationNumbers = [];
             paymentScheduleList = []
+            let dateArray = fromDate.value.split(" ")
+            if(dateArray[2]==undefined){
+                dateArray[2] = ""
+            }
+            const departureDate = dateArray[0]
+            const returnDate = dateArray[2]
+
     
-            // Ensure fileData and its properties are correctly structured
             if (fileData && fileData.Passengers) {
                 for (let i = 0; i < passengersSum; i++) {
                     if (fileData.Passengers[i] && fileData.Passengers[i].ReservationNumber) {
@@ -1170,14 +1278,17 @@ function updateAmountValue(){
                     }
                 }
             }
-            // Use template literals for better readability in alerts
             alert(`Your File Number is ${fileNumberr}. Your Reservation Number is: ${JSON.stringify(reservationNumbers)}`);
-            
-            // Log the file number to the console
+            updateFlightInfo()
+            finish(fileData)
+            console.log("FileData" , fileData );
             console.log('File Number:', fileNumberr);
             console.log('Reservation Numbers:', reservationNumbers);
-        }else{
-            showAlert("invalid")
+
+            const nextTabLinkEl = $(".nav-tabs a[href = '#step4']")
+            const nextTab = new bootstrap.Tab(nextTabLinkEl);
+            nextTab.show();
+            document.getElementById("flightInfoSection").classList.add("d-none")
         }
     });
 
@@ -1193,14 +1304,14 @@ function addPassengerToFile(){
         AirplaneNumbers = document.querySelectorAll('input[name="AirplaneNumber"]')
         seatNumbers = document.querySelectorAll('input[name="seatNumber"]')
         const notes = document.querySelectorAll('textarea[name="notes"]')
+        passengersList = []
         let passenger = {}
 
         const CompanyName = document.getElementById("chooseCompany").value || null;
         const CustomerName = document.getElementById("chooseCustomer").value;
         const branch = document.getElementById("selectBranch").value ;
         const salesPerson = document.getElementById("selectSalesPerson").value || null;
-        const toDate = document.getElementById("toDate").value || null
-
+        
             for(let i = 0 ; i < passengersSum ; i++){
                 const generatedId = Math.floor(Math.random()*1000)
                 passenger = {}
@@ -1222,7 +1333,6 @@ function addPassengerToFile(){
                 passenger.Branch = branch
                 passenger.SalesPerson = salesPerson
                 passenger.Trip = getMultiCityTrip()
-                passenger.ToDate = toDate
                 passenger.PassengersCounter = passengersSum
                 passengersList.push(passenger)
             }
@@ -1236,6 +1346,7 @@ function addPassengerToFile(){
         AirplaneNumbers = document.querySelectorAll('input[name="AirplaneNumber"]')
         seatNumbers = document.querySelectorAll('input[name="seatNumber"]')
         const notes = document.querySelectorAll('textarea[name="notes"]')
+        passengersList = []
         let passenger = {}
 
         const CompanyName = document.getElementById("chooseCompany").value || null;
@@ -1244,8 +1355,12 @@ function addPassengerToFile(){
         const salesPerson = document.getElementById("selectSalesPerson").value || null;
         const fromCountry = document.getElementById("fromCountry").value ;
         const toCountry = document.getElementById("toCountry").value ;
-        const fromDate = document.getElementById("fromDate").value ;
-        const toDate = document.getElementById("toDate").value || null
+        const dateArray = fromDate.value.trim().split(" ")
+        const departureDate = dateArray[0]        
+        let returnDate = dateArray[2]
+        if(returnDate == undefined){
+            returnDate = null 
+        }
 
         for(let i = 0 ; i < passengersSum ; i++){
             const generatedId = Math.floor(Math.random()*1000)
@@ -1265,12 +1380,12 @@ function addPassengerToFile(){
             passenger.FileNumber = 0
             passenger.CompanyName = CompanyName 
             passenger.CustomerName = CustomerName
-            passenger.Branch = branch
+            passenger.BranchName = branch
             passenger.SalesPerson = salesPerson
             passenger.FromCountry = fromCountry 
             passenger.ToCountry = toCountry
-            passenger.FromDate = fromDate
-            passenger.ToDate = toDate
+            passenger.DepartureDate = departureDate
+            passenger.ReturnDate = returnDate
             passenger.PassengersCounter = passengersSum
             passengersList.push(passenger)
         }
@@ -1281,14 +1396,12 @@ function addPassengerToFile(){
 
 
 function getFinalData() {
-
     if(tripeType == "multiCity"){
 
     const CompanyName = document.getElementById("chooseCompany").value || null;
     const CustomerName = document.getElementById("chooseCustomer").value;
     const branch = document.getElementById("selectBranch").value ;
     const salesPerson = document.getElementById("selectSalesPerson").value || null;
-    const toDate = document.getElementById("toDate").value || null
     ;
 
     const PaymentSchedule = getPaymentSchedule()
@@ -1301,11 +1414,10 @@ function getFinalData() {
     "FileNumber": generatedId,
     "CompanyName": CompanyName , 
     "CustomerName": CustomerName,
-    "Branch": branch,
+    "BranchName": branch,
     "SalesPerson": salesPerson,
     "TripType": tripeType,
     "Trip": passengersList[0].Trip,
-    "ToDate": toDate,
     "PassengersCounter": passengersSum,
     "Passengers": passengersList,
     "PaymentSchedule": PaymentSchedule
@@ -1315,7 +1427,6 @@ function getFinalData() {
         passengersList[i].FileNumber = generatedId
     }
     
-    console.log("FileData" , finalData );
     return finalData
 
     }else{
@@ -1325,8 +1436,12 @@ function getFinalData() {
         const salesPerson = document.getElementById("selectSalesPerson").value || null;
         const fromCountry = document.getElementById("fromCountry").value ;
         const toCountry = document.getElementById("toCountry").value ;
-        const fromDate = document.getElementById("fromDate").value ;
-        const toDate = document.getElementById("toDate").value || null
+        const dateArray = fromDate.value.trim().split(" ")
+        const departureDate = dateArray[0]        
+        let returnDate = dateArray[2]
+        if(returnDate == undefined){
+            returnDate = null 
+        } 
         ;
 
         const PaymentSchedule = getPaymentSchedule()
@@ -1340,13 +1455,13 @@ function getFinalData() {
         "FileNumber": generatedId,
         "CompanyName": CompanyName , 
         "CustomerName": CustomerName,
-        "Branch": branch,
+        "BranchName": branch,
         "SalesPerson": salesPerson,
         "TripType": tripeType,
         "FromCountry": fromCountry,
         "ToCountry": toCountry,
-        "FromDate": fromDate,
-        "ToDate": toDate,
+        "DepartureDate": departureDate,
+        "ReturnDate": returnDate,
         "PassengersCounter": passengersSum,
         "Passengers": passengersList,
         "PaymentSchedule": PaymentSchedule
@@ -1355,8 +1470,6 @@ function getFinalData() {
         for(let i = 0 ; i < passengersList.length ; i ++){
             passengersList[i].FileNumber = generatedId
         }
-        
-        console.log("FileData" , finalData );
         return finalData
     }
 }
@@ -1372,13 +1485,11 @@ const updateSection2Data = () => {
     section2Data.input2 = document.getElementById('input2').value;
 };
 
-// Function to save data to session storage
 const saveToSessionStorage = () => {
     sessionStorage.setItem('section1Data', JSON.stringify(section1Data));
     sessionStorage.setItem('section2Data', JSON.stringify(section2Data));
 };
 
-// Retrieve data from session storage
 const loadFromSessionStorage = () => {
     const savedSection1Data = JSON.parse(sessionStorage.getItem('section1Data'));
     const savedSection2Data = JSON.parse(sessionStorage.getItem('section2Data'));
@@ -1391,3 +1502,129 @@ const loadFromSessionStorage = () => {
         document.getElementById('input2').value = savedSection2Data.input2;
     }
 };
+
+
+function finish(finalData){
+    const CompanyName = document.getElementById("chooseCompany").value || null;
+    const CustomerName = document.getElementById("chooseCustomer").value;
+    const branch = document.getElementById("selectBranch").value ;
+    const salesPerson = document.getElementById("selectSalesPerson").value || null;
+    const fromCountry = document.getElementById("fromCountry").value ;
+    const toCountry = document.getElementById("toCountry").value ;
+    const dateArray = fromDate.value.trim().split(" ")
+    const departureDate = dateArray[0]     
+    const fileData = finalData;
+    const fileNumberr = fileData.FileNumber;
+    const reservationNumbers = [];   
+    let returnDate = dateArray[2]
+    if(returnDate == undefined){
+        returnDate = null 
+    }
+    if(tripeType == "OneWay"){
+        tripeType = "One Way"
+    }else if(tripeType == "roundTrip"){
+        tripeType = "Round Trip"
+    }else if(tripeType == "multiCity"){
+        tripeType = "MultiCity"
+    }
+
+    if (fileData && fileData.Passengers) {
+        for (let i = 0; i < passengersSum; i++) {
+            if (fileData.Passengers[i] && fileData.Passengers[i].ReservationNumber) {
+                reservationNumbers.push(fileData.Passengers[i].ReservationNumber+" ");
+            }
+        }
+    }
+    if(tripeType == "MultiCity" ){
+        const data = `
+                                <div class="row">
+                                ${CompanyName != null  ? 
+                                    `<div class="col-sm-4 col-md-3 col-lg-2 col-4">
+                                        <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+                                    </div>` : ""}
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Branch Name: </span>${branch}</p>
+                                    </div>
+                                    ${salesPerson != null  ? `
+                                        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+                                            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+                                        </div>`: ""}
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Trip Type: </span> ${tripeType}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Number of Passengeres: </span>${passengersSum}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">File Number: </span>${fileNumberr}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Reservation Numbers: </span>${reservationNumbers}</p>
+                                    </div>
+                                </div>
+                                `
+
+        document.getElementById("data-summary").insertAdjacentHTML("afterbegin" , data)
+        
+    } else{
+        
+
+        const data =
+        `
+                                        <div class="row">
+                                        ${CompanyName != null  ? 
+                                            `<div class="col-sm-4 col-md-3 col-lg-2 col-4">
+                                                <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+                                            </div>` : ""}
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Branch Name: </span>${branch}</p>
+                                    </div>
+                                    ${salesPerson != null  ? `
+                                        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
+                                            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+                                        </div>`: ""}
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Trip Type: </span> ${tripeType}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">From: </span>${fromCountry}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">To: </span>${toCountry}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Departure Date: </span>${departureDate}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                            ${tripeType === "Round Trip" ? `<div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Return Date: </span>${returnDate}</p>
+                                    </div>` : ""}
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">Number of Passengeres: </span>${passengersSum}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-fit-content"><span class="fw-bold">File Number: </span>${fileNumberr}</p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-4">
+                                        <p class="w-fit-content"><span class="fw-bold">Reservation Numbers: </span>${reservationNumbers}</p>
+                                    </div>
+                                    </div>`
+        document.getElementById("data-summary").innerHTML = data
+    }
+}
+
+
+printBtn.addEventListener("click" , function(){
+    window.print()
+})
