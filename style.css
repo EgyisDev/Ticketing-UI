@@ -67,6 +67,11 @@ select.form-control{
 	font-size: 13px;
 }
 
+.removeBlock{
+	right: 7px;
+	top: -3px;
+}
+
 .flightInfo{
 	background-color: aliceblue;
 }
@@ -75,7 +80,7 @@ input.PassengersDataInput::placeholder{
     font-size: 15px;
 }
 
-.removeRow i:hover{
+.removeRow ,.removeBlock i:hover{
     color: red;
 }
 

@@ -27,8 +27,6 @@ const fromCountry = document.getElementById("fromCountry").value
 const toCountry = document.getElementById("toCountry").value
 const flightInfo = document.getElementById("flightInfo")
 const multiCityData = document.getElementById("multiCityData")
-let isPassengersUpdated = false
-let firstTime = true
 let paymentTotalCost = document.getElementById("paymentTotalCost")
 let paymentTotalSellingPrice = document.getElementById("paymentTotalSellingPrice")
 
@@ -74,8 +72,7 @@ const updateCounters = (passengersSum) => {
     childsCounterText.innerHTML = childscounter;
     infantCounterText.innerHTML = Infantscounter;
     passengersSum > 1 ? passengersDataSpan.innerHTML = `${passengersSum} Passengers`:passengersDataSpan.innerHTML = `${passengersSum} Passenger`
-    isPassengersUpdated = true
-    firstTime = false
+    updateFlightInfo()
 };
 
 
@@ -85,10 +82,10 @@ const addPassenger = (type) => {
     if (type === 'infant' && Infantscounter < adultscounter) Infantscounter++;
     passengersSum = Number(adultscounter) + Number(childscounter) + Number(Infantscounter)
     updateCounters(passengersSum);
-    updateFlightInfo()
 };
 
-const removePassenger = (type) => {
+function removePassenger(type) {
+    if (type === 'adult' && adultscounter > 1 && Infantscounter == adultscounter ) removePassenger("infant");
     if (type === 'adult' && adultscounter > 1) adultscounter-- && passengersSum-- && deletePassengerBlock(type);
     if (type === 'child' && childscounter > 0) childscounter-- && passengersSum-- && deletePassengerBlock(type); 
     if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- && deletePassengerBlock(type);
@@ -360,11 +357,17 @@ const updateFlightInfo = () => {
             <p class="header-text w-auto m-0"><span class="header-text fw-bold">Trip Type: </span>${tripeType}</p>
         </div>
         <div class="col-sm-4 col-md-3 col-lg-2 col-4">
-            <p class="w-auto m-0"><span class="header-text fw-bold">From: </span>${fromCountry}</p>
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">From: </span>${fromCountry}</p>
         </div>
         <div class="col-sm-4 col-md-3 col-lg-2 col-4">
-            <p class="w-auto m-0"><span class="header-text fw-bold">To: </span>${toCountry}</p>
+            <p class="header-text w-auto m-0"><span class="header-text fw-bold">To: </span>${toCountry}</p>
         </div>
+        <div class="col-sm-12 col-md-6 col-lg-2">
+            <p class="header-text w-fit-content"><span class="header-text fw-bold">Departure Date: </span>${departureDate}</p>
+        </div>
+        ${tripeType === "Round Trip" ? `<div class="col-sm-12 col-md-6 col-lg-2">
+            <p class="header-text w-fit-content"><span class="header-text fw-bold">Return Date: </span>${returnDate}</p>
+        </div>` : ""}
         <div class="col-sm-4 col-md-3 col-lg-2 col-4">
             ${passengersSum > 1 ? `<p class="header-text w-auto m-0"><span class="header-text fw-bold">Passengers: </span>${passengersSum}</p>` : `<p class="header-text w-auto m-0"><span class="fw-bold">Passenger: </span>${passengersSum}</p>`}
         </div>
@@ -372,12 +375,8 @@ const updateFlightInfo = () => {
 
     }
 
-    if(isPassengersUpdated || firstTime){
-        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, passengersSum, multicityDataList , adulti , childi , infanti);
-        isPassengersUpdated = false
-        firstTime = false
-    }
 
+        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, passengersSum, multicityDataList , adulti , childi , infanti);
 };
 
 
@@ -400,8 +399,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
         }
             if(adultscounter >= 0 && adultscounter > adulti){
                 cartoona = `
-                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
+                    <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                        <i class="fa-solid fa-x p-3"></i>
+                    </div>
                     <div class="dataInputs">
                         <div class="row p-4 gy-3">
                                         <div class="row gy-3">
@@ -483,8 +485,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             }
             if(childscounter > 0 && childscounter > childi){
                 cartoona = `
-                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
+                    <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                        <i class="fa-solid fa-x p-3"></i>
+                    </div>
                     <div class="dataInputs">
                         <div class="row p-4">
                                             <div class="row gy-3">
@@ -570,8 +575,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
 
             if(Infantscounter > 0 && Infantscounter > infanti){
                 cartoona = `
-                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+                <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
+                    <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                        <i class="fa-solid fa-x p-3"></i>
+                    </div>
                     <div class="dataInputs">
                         <div class="row p-4">
                                         <div class="row gy-3">
@@ -655,8 +663,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
     } else {
         if(adultscounter >= 0 && adultscounter > adulti){
             cartoona = `
-            <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+            <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
+                <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                    <i class="fa-solid fa-x p-3"></i>
+                </div>
                 <div class="dataInputs">
                     <div class="row p-4">
             <div class="row gy-3">
@@ -740,8 +751,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
         }
         if(childscounter > 0 && childscounter > childi){
             cartoona = `
-            <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+            <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
+                <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                    <i class="fa-solid fa-x p-3"></i>
+                </div>
                 <div class="dataInputs">
                     <div class="row p-4">
                                     <div class="row gy-3">
@@ -751,7 +765,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
-                    <select class="p-2 form-contpplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -824,11 +838,16 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             document.getElementById('childs').insertAdjacentHTML("beforeend" , cartoona);
 
         }
+
+
         
         if(Infantscounter > 0 && Infantscounter > infanti){
             cartoona = `
-                        <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2">
+                        <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                             <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
+                            <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
+                                <i class="fa-solid fa-x p-3"></i>
+                            </div>
                             <div class="dataInputs">
                                 <div class="row p-4">
                                             <div class="row gy-3">
@@ -838,7 +857,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3">
                     <label class="pb-0 ps-1 fw-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger fw-bolder">*</span></label>
-                    <select class="p-2 form-contpplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -910,43 +929,80 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         `;
                         document.getElementById('infants').insertAdjacentHTML("beforeend" , cartoona);
                     }
-    
-    }
-
-
-
-    const costPriceElements = document.querySelectorAll("input[name='costPrice']");
-    const sellingPriceElements = document.querySelectorAll("input[name='sellingPrice']");
-
-    costPriceElements.forEach(element => {
-        const value = parseFloat(element.value);
-        if (!isNaN(value)) {
-            totalCostPrice += value;
-        }
-    });
-
-    sellingPriceElements.forEach(element => {
-        const value = parseFloat(element.value);
-        if (!isNaN(value)) {
-            totalSellingPrice += value;
-        }
-    })
-};
-
-function deletePassengerBlock(type){
-    if (type == "adult") {
-        const adultsList = document.querySelector('#passengersRow #adults').children;
-        adultsList[adultsList.length - 1].remove()
-    }
-    else if (type == "child") {
-        const adultsList = document.querySelector('#passengersRow #childs').children;
-        adultsList[adultsList.length - 1].remove()
-    }
-    else if (type == "infant") {
-        const adultsList = document.querySelector('#passengersRow #infants').children;
-        adultsList[adultsList.length - 1].remove()
     }
 }
+
+
+    function deleteSpacificPassengerBlock(event){
+        const passengersDataCard = event.target.closest('.passengersDataCard')
+        const type =  passengersDataCard.querySelector('.passengersDataCard p').getAttribute("type")
+        if ((type === 'adult' && adultscounter > 1)  && (Infantscounter != adultscounter)){
+            if (type === 'adult' && adultscounter > 1) adultscounter-- && passengersSum-- ;
+            if (type === 'child' && childscounter > 0) childscounter-- && passengersSum-- ; 
+            if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- ; 
+            passengersDataCard.remove()
+            updateCounters(passengersSum);
+            reNumberingBlocks(type)
+        }else if(type === 'child' || type === 'infant'){
+            if (type === 'child' && childscounter > 0) childscounter-- && passengersSum-- ; 
+            if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- ;
+            passengersDataCard.remove()
+            updateCounters(passengersSum);
+            reNumberingBlocks(type)
+        }
+    }
+    function reNumberingBlocks (type){
+        const adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
+        const childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
+        const infanti = document.querySelectorAll('#passengersRow .passengerType[type="infant"]').length;
+        if(type === "adult"){
+            for(let i = 0 ; i < adulti ; i++ ){
+                document.querySelectorAll("#adults .passengersDataCard p")[i].innerHTML=`Adult${i+1}`
+            }
+        }else if(type === 'childs'){
+            for(let i = 0 ; i < childi ; i++ ){
+                document.querySelectorAll("#childs .passengersDataCard p")[i].innerHTML=`Child${i+1}`
+            }
+        }else if(type === 'infants'){
+            for(let i = 0 ; i < infanti ; i++ ){
+                document.querySelectorAll("#infants .passengersDataCard p")[i].innerHTML=`Infant${i+1}`
+            }
+        }
+    }
+
+
+        const costPriceElements = document.querySelectorAll("input[name='costPrice']");
+        const sellingPriceElements = document.querySelectorAll("input[name='sellingPrice']");
+    
+        costPriceElements.forEach(element => {
+            const value = parseFloat(element.value);
+            if (!isNaN(value)) {
+                totalCostPrice += value;
+            }
+        });
+    
+        sellingPriceElements.forEach(element => {
+            const value = parseFloat(element.value);
+            if (!isNaN(value)) {
+                totalSellingPrice += value;
+            }
+        })
+
+
+        function deletePassengerBlock(type){
+            if (type == "adult") {
+                const adultsList = document.querySelector('#passengersRow #adults').children;
+                adultsList[adultsList.length - 1].remove()
+            }
+            else if (type == "child") {
+                const adultsList = document.querySelector('#passengersRow #childs').children;
+                adultsList[adultsList.length - 1].remove()
+            }
+            else if (type == "infant") {
+                const adultsList = document.querySelector('#passengersRow #infants').children;
+                adultsList[adultsList.length - 1].remove()
+            }
+        }
 
 
 
@@ -998,10 +1054,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-adultsController.children[0].addEventListener("click", () => addPassenger('adult'));
-adultsController.children[2].addEventListener("click", () => removePassenger('adult'));
-childsController.children[0].addEventListener("click", () => addPassenger('child'));
-childsController.children[2].addEventListener("click", () => removePassenger('child'));
+adultsController.children[0].addEventListener("click",  () => addPassenger('adult'));
+adultsController.children[2].addEventListener("click",  () => removePassenger('adult'));
+childsController.children[0].addEventListener("click",  () => addPassenger('child'));
+childsController.children[2].addEventListener("click",  () => removePassenger('child'));
 infantsController.children[0].addEventListener("click", () => addPassenger('infant'));
 infantsController.children[2].addEventListener("click", () => removePassenger('infant'));
 
@@ -1539,8 +1595,8 @@ function finish(finalData){
         const data = `
                                 <div class="row">
                                 ${CompanyName != null  ? 
-                                    `<div class="col-sm-4 col-md-3 col-lg-2 col-4">
-                                        <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+                                    `<div class="col-sm-12 col-md-6 col-lg-3">
+                                        <p class="w-auto m-0"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
                                     </div>` : ""}
                                     <div class="col-sm-12 col-md-6 col-lg-3">
                                         <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
@@ -1549,8 +1605,8 @@ function finish(finalData){
                                         <p class="w-fit-content"><span class="fw-bold">Branch Name: </span>${branch}</p>
                                     </div>
                                     ${salesPerson != null  ? `
-                                        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
-                                            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                            <p class="w-auto m-0"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
@@ -1578,8 +1634,8 @@ function finish(finalData){
         `
                                         <div class="row">
                                         ${CompanyName != null  ? 
-                                            `<div class="col-sm-4 col-md-3 col-lg-2 col-4">
-                                                <p class="header-text w-auto m-0"><span class="header-text fw-bold">Company Name: </span>${CompanyName}</p>
+                                            `<div class="col-sm-12 col-md-6 col-lg-3">
+                                                <p class="w-auto m-0"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
                                             </div>` : ""}
                                     <div class="col-sm-12 col-md-6 col-lg-3">
                                         <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
@@ -1588,8 +1644,8 @@ function finish(finalData){
                                         <p class="w-fit-content"><span class="fw-bold">Branch Name: </span>${branch}</p>
                                     </div>
                                     ${salesPerson != null  ? `
-                                        <div class="col-sm-4 col-md-3 col-lg-2 col-4">
-                                            <p class="header-text w-auto m-0"><span class="header-text fw-bold">Sales Person: </span>${salesPerson}</p>
+                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                            <p class="w-auto m-0"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
