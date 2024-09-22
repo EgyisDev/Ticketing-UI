@@ -23,8 +23,8 @@ const CompanyName = document.getElementById("chooseCompany").value || null
 const CustomerName = document.getElementById("chooseCustomer").value
 const branch = document.getElementById("selectBranch").value
 const salesPreson = document.getElementById("selectSalesPerson").value || null
-const fromCountry = document.getElementById("fromCountry").value
-const toCountry = document.getElementById("toCountry").value
+let fromCountry = document.querySelector(".fromCountry").value
+let toCountry = document.querySelector(".toCountry").value
 const flightInfo = document.getElementById("flightInfo")
 const multiCityData = document.getElementById("multiCityData")
 let paymentTotalCost = document.getElementById("paymentTotalCost")
@@ -132,7 +132,7 @@ const toggleDateInputs = (value) => {
 
 
 const createRowData = (rowIndex) => `
-<div class="row align-items-center mb-3 row-data gy-3" data-row-index="${rowIndex}">
+<div class="row align-items-center mb-3 row-data gy-3 position-relative" data-row-index="${rowIndex}">
     <div class="col-sm-12 col-md-6 col-lg-3">
         <select class="fromCountry form-control me-2" name="fromCountry" required>
             <option value="" disabled selected hidden>From</option>
@@ -141,6 +141,9 @@ const createRowData = (rowIndex) => `
             <option value="Aswan">Aswan</option>
         </select>
     </div>
+    <button class="btn exchange w-auto m-0 d-flex justify-content-center align-items-center" onclick="exchangeDestenation(event)">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+    </button>
     <div class="col-sm-12 col-md-6 col-lg-3">
         <select class="toCountry form-control me-2" name="toCountry" required>
             <option value="" disabled selected hidden>To</option>
@@ -161,13 +164,24 @@ const createRowData = (rowIndex) => `
         </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-12  d-flex justify-content-sm-end align-items-center">
+    <div class="col-md-3 col-sm-12 col-lg  d-flex justify-content-sm-start align-items-center">
         <div class="removeRow d-none">
             <i onClick="deleteRow(event)" class="fa-solid fa-x p-3"></i>
         </div>
     </div>
 </div>
 `;
+
+function exchangeDestenation(event){
+    let row
+    row = event.target.closest('.row.align-items-center.mb-3.row-data.gy-3') || event.target.closest('.row.mb-3.row-data.gy-3') 
+    let tempBox = ""
+    fromCountry= row.querySelector(".fromCountry")
+    toCountry=   row.querySelector(".toCountry")
+    tempBox = fromCountry.value
+    fromCountry.value = toCountry.value
+    toCountry.value = tempBox
+}
 
 
 const addRow = () => {
@@ -300,13 +314,13 @@ const updateFlightInfo = () => {
 
             flightInfo.innerHTML += `
             <div class="row">
-                    <div class="col">
+                    <div class="col-sm-4 col-md-3 col-lg-2 col-4">
                         <p class="w-auto m-0 header-text"><span class="fw-bold">From: </span>${tripe.fromCountry}</p>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-4 col-md-3 col-lg-2 col-4">
                         <p class="w-auto m-0 header-text"><span class="fw-bold">To: </span>${tripe.toCountry}</p>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-4 col-md-3 col-lg-3 col-4">
                         <p class="w-auto m-0 header-text"><span class="fw-bold">Departure Date: </span>${tripe.fromDate}</p>
                     </div>
             </div>
@@ -315,13 +329,13 @@ const updateFlightInfo = () => {
 
             multiCityData.innerHTML += `
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-4 col-md-3 col-lg-2 col-4">
                                         <p class="w-fit-content"><span class="fw-bold">From: </span>${tripe.fromCountry}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-4 col-md-3 col-lg-2 col-4">
                                         <p class="w-fit-content"><span class="fw-bold">To: </span>${tripe.toCountry}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-4 col-md-3 col-lg-2 col-4">
                                         <p class="w-fit-content"><span class="fw-bold">Departure Date: </span>${tripe.fromDate}</p>
                                     </div>
                                 </div>
@@ -402,7 +416,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
                     <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                        <i class="fa-solid fa-x p-3"></i>
+                        <i class="fa-solid fa-trash p-3"></i>
                     </div>
                     <div class="dataInputs">
                         <div class="row p-4 gy-3">
@@ -488,7 +502,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
                     <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                        <i class="fa-solid fa-x p-3"></i>
+                        <i class="fa-solid fa-trash p-3"></i>
                     </div>
                     <div class="dataInputs">
                         <div class="row p-4">
@@ -578,7 +592,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                     <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
                     <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                        <i class="fa-solid fa-x p-3"></i>
+                        <i class="fa-solid fa-trash p-3"></i>
                     </div>
                     <div class="dataInputs">
                         <div class="row p-4">
@@ -666,7 +680,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="adult">Adult${adulti + 1}</p>
                 <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                    <i class="fa-solid fa-x p-3"></i>
+                    <i class="fa-solid fa-trash p-3"></i>
                 </div>
                 <div class="dataInputs">
                     <div class="row p-4">
@@ -754,7 +768,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                 <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="child">Child${childi + 1}</p>
                 <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                    <i class="fa-solid fa-x p-3"></i>
+                    <i class="fa-solid fa-trash p-3"></i>
                 </div>
                 <div class="dataInputs">
                     <div class="row p-4">
@@ -846,7 +860,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="passengersDataCard mt-3 mb-3 border rounded-3 p-2 position-relative">
                             <p class="passengerType d-flex justify-content-center align-items-center fw-bold" type="infant">Infant${infanti + 1}</p>
                             <div class="removeBlock position-absolute w-fit-content" onclick="deleteSpacificPassengerBlock(event)">
-                                <i class="fa-solid fa-x p-3"></i>
+                                <i class="fa-solid fa-trash p-3"></i>
                             </div>
                             <div class="dataInputs">
                                 <div class="row p-4">
@@ -934,21 +948,42 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
 
 
     function deleteSpacificPassengerBlock(event){
+        debugger
         const passengersDataCard = event.target.closest('.passengersDataCard')
         const type =  passengersDataCard.querySelector('.passengersDataCard p').getAttribute("type")
         if ((type === 'adult' && adultscounter > 1)  && (Infantscounter != adultscounter)){
             if (type === 'adult' && adultscounter > 1) adultscounter-- && passengersSum-- ;
             if (type === 'child' && childscounter > 0) childscounter-- && passengersSum-- ; 
-            if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- ; 
-            passengersDataCard.remove()
+            if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- ;
+            passengersDataCard.classList.add("fadeOut")
+            passengersDataCard.style.animation = "fade-out 0.5s ease-in-out";
+            passengersDataCard.style.opacity = "0";
+            setTimeout(()=>{passengersDataCard.remove()} , 500)
             updateCounters(passengersSum);
             reNumberingBlocks(type)
         }else if(type === 'child' || type === 'infant'){
             if (type === 'child' && childscounter > 0) childscounter-- && passengersSum-- ; 
             if (type === 'infant' && Infantscounter > 0) Infantscounter-- &&  passengersSum-- ;
-            passengersDataCard.remove()
+            passengersDataCard.classList.add("fadeOut")
+            passengersDataCard.style.animation = "fade-out 0.5s ease-in-out";
+            passengersDataCard.style.opacity = "0";
+            setTimeout(()=>{passengersDataCard.remove()} , 500)
             updateCounters(passengersSum);
             reNumberingBlocks(type)
+        }
+        else if((type === 'adult' && adultscounter > 1)  && (Infantscounter == adultscounter)){
+            Swal.fire({
+            title: "Error",
+            text: "You can not delete this block , Number of Infants should be less than or equall to Number of Adults ,please delete one Infant then try again",
+            icon: "error",
+            });
+        }
+        else if((type === 'adult' && adultscounter == 1)){
+            Swal.fire({
+            title: "Error",
+            text: "You can not delete this block , Number of Adults should be at least one Adult",
+            icon: "error",
+            });
         }
     }
 
@@ -1337,7 +1372,6 @@ function updateAmountValue(){
                     }
                 }
             }
-            alert(`Your File Number is ${fileNumberr}. Your Reservation Number is: ${JSON.stringify(reservationNumbers)}`);
             updateFlightInfo()
             finish(fileData)
             console.log("FileData" , fileData );

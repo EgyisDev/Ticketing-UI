@@ -63,6 +63,14 @@ select.form-control{
 	right: 15px;
 }
 
+
+.rowData .exchange{
+	position: relative;
+	top: 10px;
+	left: 0px;
+}
+
+
 .passengersData-list{
 	background-color: aliceblue;
     box-shadow: 0 4px 12px #0000001a;
@@ -70,6 +78,7 @@ select.form-control{
     top: 71px;
 	right: 12px;
 	left: 12px;
+	z-index: 5;
 }
 
 .header-text{
@@ -81,6 +90,7 @@ select.form-control{
 	top: -3px;
 }
 
+
 .flightInfo{
 	background-color: aliceblue;
 }
@@ -91,6 +101,7 @@ input.PassengersDataInput::placeholder{
 
 .removeRow i:hover, .removeBlock i:hover{
     color: red;
+	cursor: pointer;
 }
 
 .is-invalid {
@@ -141,6 +152,20 @@ input.PassengersDataInput::placeholder{
 .total-body{
 	border-top: 3px solid teal
 }
+
+
+/* Fade out Effect */
+
+.fadeOut {
+	opacity: 1;
+	animation: fade-out 0.5s ease-in-out;
+}
+
+@keyframes fade-out {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
 
 
 /* wizard */
@@ -227,6 +252,20 @@ input.PassengersDataInput::placeholder{
 		position: relative;
 		left: 64%;
 	}
+	.exchange{
+		position: absolute;
+		top: 72px;
+		left: 48%;
+		height: fit-content;
+		width: fit-content;
+		transform: rotate(90deg);
+	}
+
+	.rowData .exchange{
+		position: absolute;
+		top: 43px;
+		left: 50%;
+	}
 }
 @media (min-width: 576px){
 
@@ -247,6 +286,21 @@ input.PassengersDataInput::placeholder{
 	.confermationSectionTitle{
 		position: relative;
 		left: 71%;
+	}
+
+	.exchange{
+		position: absolute;
+		top: 72px;
+		left: 48%;
+		height: fit-content;
+		width: fit-content;
+		transform: rotate(90deg);
+	}
+
+	.rowData .exchange{
+		position: absolute;
+		top: 43px;
+		left: 50%;
 	}
 }
 
@@ -271,6 +325,21 @@ input.PassengersDataInput::placeholder{
 		position: relative;
 		left: 74%;
 	}
+
+	.exchange{
+		position: absolute;
+		top: 34px;
+		left: 312px;
+		height: fit-content;
+		width: fit-content;
+		transform: rotate(0deg);
+	}
+
+	.rowData .exchange{
+		position: absolute;
+		top: 18px;
+		left: 312px;
+	}
 }
 
 @media (min-width: 992px){
@@ -294,6 +363,19 @@ input.PassengersDataInput::placeholder{
 		position: relative;
 		left: 77%;
 	}
+
+	.exchange{
+		position: relative;
+		top: 51px;
+		left: 0px;
+		transform: rotate(0deg);
+	}
+
+	.rowData .exchange{
+		position: relative;
+		top: 10px;
+		left: 0px;
+	}
 }
 
 
@@ -316,6 +398,19 @@ input.PassengersDataInput::placeholder{
 	.confermationSectionTitle{
 		position: relative;
 		left: 79%;
+	}
+
+	.exchange{
+		position: relative;
+		top: 51px;
+		left: 0px;
+		transform: rotate(0deg);
+	}
+
+	.rowData .exchange{
+		position: relative;
+		top: 10px;
+		left: 0px;
 	}
 }
 
