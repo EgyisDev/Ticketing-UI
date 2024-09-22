@@ -951,6 +951,8 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             reNumberingBlocks(type)
         }
     }
+
+
     function reNumberingBlocks (type){
         const adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
         const childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
@@ -959,11 +961,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             for(let i = 0 ; i < adulti ; i++ ){
                 document.querySelectorAll("#adults .passengersDataCard p")[i].innerHTML=`Adult${i+1}`
             }
-        }else if(type === 'childs'){
+        }else if(type === 'child'){
             for(let i = 0 ; i < childi ; i++ ){
                 document.querySelectorAll("#childs .passengersDataCard p")[i].innerHTML=`Child${i+1}`
             }
-        }else if(type === 'infants'){
+        }else if(type === 'infant'){
             for(let i = 0 ; i < infanti ; i++ ){
                 document.querySelectorAll("#infants .passengersDataCard p")[i].innerHTML=`Infant${i+1}`
             }
@@ -1105,15 +1107,16 @@ addTableRowBtn.addEventListener("click", function() {
 function getMultiCityTrip(){
     if (tripeType === "multiCity") {
         multicityDataList = []; 
-        const rowCount = document.querySelectorAll('.row-data').length;
-        for (let i = 0; i < rowCount; i++) {
-            const tripe = {
-                fromCountry: document.querySelector(`[data-row-index="${i}"] .fromCountry`).value,
-                toCountry: document.querySelector(`[data-row-index="${i}"] .toCountry`).value,
-                departureDate: document.querySelector(`[data-row-index="${i}"] .fromDate.flatpickr-input`).value,
+        const rowCount = document.querySelectorAll('.row-data');
+        rowCount.forEach(row =>{
+            let tripe = {}
+            tripe = {
+                fromCountry: row.querySelector(`.fromCountry`).value,
+                toCountry: row.querySelector(`.toCountry`).value,
+                departureDate: row.querySelector(`.fromDate.flatpickr-input`).value,
             };
             multicityDataList.push(tripe);
-        }
+        })
         return multicityDataList
     }
 }
@@ -1596,7 +1599,7 @@ function finish(finalData){
                                 <div class="row">
                                 ${CompanyName != null  ? 
                                     `<div class="col-sm-12 col-md-6 col-lg-3">
-                                        <p class="w-auto m-0"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
+                                        <p class="w-fit-content"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
                                     </div>` : ""}
                                     <div class="col-sm-12 col-md-6 col-lg-3">
                                         <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
@@ -1606,7 +1609,7 @@ function finish(finalData){
                                     </div>
                                     ${salesPerson != null  ? `
                                         <div class="col-sm-12 col-md-6 col-lg-3">
-                                            <p class="w-auto m-0"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
+                                            <p class="w-fit-content"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
@@ -1635,7 +1638,7 @@ function finish(finalData){
                                         <div class="row">
                                         ${CompanyName != null  ? 
                                             `<div class="col-sm-12 col-md-6 col-lg-3">
-                                                <p class="w-auto m-0"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
+                                                <p class="w-fit-content"><span class="fw-bold">Company Name: </span>${CompanyName}</p>
                                             </div>` : ""}
                                     <div class="col-sm-12 col-md-6 col-lg-3">
                                         <p class="w-fit-content"><span class="fw-bold">Customer Name: </span>${CustomerName}</p>
@@ -1645,7 +1648,7 @@ function finish(finalData){
                                     </div>
                                     ${salesPerson != null  ? `
                                         <div class="col-sm-12 col-md-6 col-lg-3">
-                                            <p class="w-auto m-0"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
+                                            <p class="w-fit-content"><span class="fw-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
