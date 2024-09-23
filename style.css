@@ -10,6 +10,10 @@
     display: none;
 }
 
+.rounded-3{
+	border-radius: 0.5rem;
+}
+
 .booking-card{
 	background-color: aliceblue;
 	box-shadow: 0 4px 12px #0000001a;
@@ -54,13 +58,13 @@ select.form-control{
 .passengersDataSpan{
     position: absolute;
     width: fit-content;
-    top: 38px;
+    top: 46px;
     left: 20px;
 }
 
 .passengersDetails i{
 	bottom: 9px;
-	right: 15px;
+	right: 20px;
 }
 
 
@@ -93,6 +97,7 @@ select.form-control{
 
 .flightInfo{
 	background-color: aliceblue;
+	box-shadow: 0 -1px 12px #0000001a;
 }
 
 input.PassengersDataInput::placeholder{
@@ -142,12 +147,24 @@ input.PassengersDataInput::placeholder{
     color: green;
 }
 
+.fromDate , .passengersDataInput{
+	background-color: white !important;
+}
 
-.fromDateValue , .toDateValue{
+
+.fromDateValue{
 	bottom: -30px;
-	left: 0;
+	left: 5px;
 	z-index: 5;
 }
+
+.toDateValue{
+	bottom: -30px;
+	left: -10px;
+	z-index: 5;
+}
+
+
 
 .total-body{
 	border-top: 3px solid teal
@@ -250,12 +267,12 @@ input.PassengersDataInput::placeholder{
 	}
 	.confermationSectionTitle{
 		position: relative;
-		left: 64%;
+		left: 57%;
 	}
 	.exchange{
 		position: absolute;
-		top: 72px;
-		left: 48%;
+		top: 98px;
+		left: 50%;
 		height: fit-content;
 		width: fit-content;
 		transform: rotate(90deg);
@@ -263,8 +280,9 @@ input.PassengersDataInput::placeholder{
 
 	.rowData .exchange{
 		position: absolute;
-		top: 43px;
+		top: 37px;
 		left: 50%;
+		z-index: 5;
 	}
 }
 @media (min-width: 576px){
@@ -285,13 +303,13 @@ input.PassengersDataInput::placeholder{
 
 	.confermationSectionTitle{
 		position: relative;
-		left: 71%;
+		left: 57%;
 	}
 
 	.exchange{
 		position: absolute;
-		top: 72px;
-		left: 48%;
+        top: 98px;
+        left: 50%;
 		height: fit-content;
 		width: fit-content;
 		transform: rotate(90deg);
@@ -299,8 +317,9 @@ input.PassengersDataInput::placeholder{
 
 	.rowData .exchange{
 		position: absolute;
-		top: 43px;
+		top: 37px;
 		left: 50%;
+		z-index: 5;
 	}
 }
 
@@ -328,8 +347,8 @@ input.PassengersDataInput::placeholder{
 
 	.exchange{
 		position: absolute;
-		top: 34px;
-		left: 312px;
+        top: 49px;
+        left: 320px;
 		height: fit-content;
 		width: fit-content;
 		transform: rotate(0deg);
@@ -337,8 +356,8 @@ input.PassengersDataInput::placeholder{
 
 	.rowData .exchange{
 		position: absolute;
-		top: 18px;
-		left: 312px;
+		top: 8px;
+		left: 334px;
 	}
 }
 
@@ -366,14 +385,14 @@ input.PassengersDataInput::placeholder{
 
 	.exchange{
 		position: relative;
-		top: 51px;
+		top: 50px;
 		left: 0px;
 		transform: rotate(0deg);
 	}
 
 	.rowData .exchange{
 		position: relative;
-		top: 10px;
+		top: 0px;
 		left: 0px;
 	}
 }
@@ -409,9 +428,10 @@ input.PassengersDataInput::placeholder{
 
 	.rowData .exchange{
 		position: relative;
-		top: 10px;
+		top: 0px;
 		left: 0px;
 	}
 }
+
 
 
