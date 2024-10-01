@@ -19,10 +19,10 @@ const nextToPayments = document.getElementById("nextToPayments")
 
 let tripeType = "roundTrip"
 
-const CompanyName = document.getElementById("chooseCompany").value || null
-const CustomerName = document.getElementById("chooseCustomer").value
-const branch = document.getElementById("selectBranch").value
-const salesPreson = document.getElementById("selectSalesPerson").value || null
+let CompanyName = document.getElementById("chooseCompany").value || null
+let CustomerName = document.getElementById("chooseCustomer").value
+let branch = document.getElementById("selectBranch").value
+let salesPreson = document.getElementById("selectSalesPerson").value || null
 let fromCountry = document.querySelector(".fromCountry").value
 let toCountry = document.querySelector(".toCountry").value
 const flightInfo = document.getElementById("flightInfo")
@@ -174,7 +174,7 @@ const createRowData = (rowIndex) => `
 
 function exchangeDestenation(event){
     let row
-    row = event.target.closest('.row.align-items-center.mb-3.row-data.gy-3') || event.target.closest('.row.mb-3.row-data.gy-3') 
+    row = event.target.closest('.row-data') || event.target.closest('.row-data-main') 
     let tempBox = ""
     fromCountry= row.querySelector(".fromCountry")
     toCountry=   row.querySelector(".toCountry")
@@ -254,18 +254,18 @@ let tripe = {}
 
 
 
-const updateFlightInfo = () => {
+function updateFlightInfo(){
+    CompanyName = document.getElementById("chooseCompany").value || null;
+    CustomerName = document.getElementById("chooseCustomer").value;
+    branch = document.getElementById("selectBranch").value;
+    salesPerson = document.getElementById("selectSalesPerson").value || null ;
+    fromCountry = document.getElementById("fromCountry").value;
+    toCountry = document.getElementById("toCountry").value;
     let rowCount = document.querySelectorAll('.row-data');
-    const CompanyName = document.getElementById("chooseCompany").value || null;
-    const CustomerName = document.getElementById("chooseCustomer").value;
-    const branch = document.getElementById("selectBranch").value;
-    const salesPerson = document.getElementById("selectSalesPerson").value || null ;
-    const fromCountry = document.getElementById("fromCountry").value;
-    const toCountry = document.getElementById("toCountry").value;
-    const fromDate = document.getElementById("fromDate").value;
-    const adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
-    const childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
-    const infanti = document.querySelectorAll('#passengersRow .passengerType[type="infant"]').length;
+    let fromDate = document.getElementById("fromDate").value;
+    let adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
+    let childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
+    let infanti = document.querySelectorAll('#passengersRow .passengerType[type="infant"]').length;
     
 
     flightInfo.innerHTML = '';
@@ -351,7 +351,6 @@ const updateFlightInfo = () => {
             tripeType = "Round Trip"
         }
 
-
         flightInfo.innerHTML=`<div class="row">
         ${CompanyName != null  ? `
         <div class="col-sm-4 col-md-3 col-lg-2 col-4">
@@ -389,6 +388,12 @@ const updateFlightInfo = () => {
 
     }
 
+    
+    if(tripeType == "One Way"){
+        tripeType = "OneWay"
+    }else if(tripeType == "Round Trip"){
+        tripeType = "roundTrip"
+    }
 
         generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, fromDate, passengersSum, multicityDataList , adulti , childi , infanti);
 };
@@ -1223,6 +1228,7 @@ function updateAmountValue(){
     const nextToFlightInfoBtn = document.getElementById('nextToFlightInfo');
     const finishBtn = document.querySelector('.finish-btn');
     function validateBookingSection() {
+        updateFlightInfo()
         const div = document.getElementById('reservationForm');
         const selects = document.querySelectorAll('.booking-card select[required]');
         const inputs = div.querySelectorAll('input[type="date"][required] , input[type="text"][required]');
@@ -1232,24 +1238,30 @@ function updateAmountValue(){
             if (select.value === "" || select.value == null) {
                 isValid = false;
                 select.classList.add('is-invalid');
+                Swal.fire({
+                    title: "Error",
+                    text: `You Must fill This Fields`,
+                    icon: "error",
+                });
             } else {
                 select.classList.remove('is-invalid');
             }
         });
 
         inputs.forEach(input => {
-            if (tripeType == "roundTrip" && (input.value == "" || input.value == null)) {
+            if ((tripeType == "roundTrip" || tripeType == "Round Trip") && (input.value == "" || input.value == null)) {
                 isValid = false;
                 input.classList.add('is-invalid');
-            }else if((tripeType == "OneWay" || tripeType == "multiCity" ) && (input.value == "") ){
+            }else if((tripeType == "OneWay" || tripeType == "One Way" || tripeType == "multiCity" ) && (fromDate.value == "") ){
                 isValid = false;
                 input.classList.add('is-invalid');
             }else{
                 input.classList.remove('is-invalid')
+                isValid = true;
             }
         });
         const dateArray = fromDate.value.trim().split(" ")
-        if(tripeType == "roundTrip" && dateArray.length == 1){
+        if((tripeType == "roundTrip" || tripeType == "Round Trip") && dateArray.length == 1){
             document.querySelector('.fromDate.flatpickr-input').classList.add('is-invalid');
             isValid = false;
         }
@@ -1279,6 +1291,7 @@ function updateAmountValue(){
                 input.classList.add('is-invalid');
             } else {
                 input.classList.remove('is-invalid');
+                isValid = true
             }
         });
 
@@ -1336,8 +1349,8 @@ function updateAmountValue(){
 
 
     nextToFlightInfoBtn.addEventListener('click', function() {
+        updateFlightInfo()
         if (validateBookingSection()) {
-            updateFlightInfo()
                 const nextTabLinkEl = $(".nav-tabs a[href = '#step2']")
                 const nextTab = new bootstrap.Tab(nextTabLinkEl);
                 nextTab.show();
@@ -1383,7 +1396,6 @@ function updateAmountValue(){
             console.log("FileData" , fileData );
             console.log('File Number:', fileNumberr);
             console.log('Reservation Numbers:', reservationNumbers);
-
             const nextTabLinkEl = $(".nav-tabs a[href = '#step4']")
             const nextTab = new bootstrap.Tab(nextTabLinkEl);
             nextTab.show();
