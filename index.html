@@ -70,7 +70,7 @@
                                             <div class="row gy-3">
                                                 <div class="col-sm-12 col-md-6 col-lg-3 position-relative mb-3">
                                                     <label class="pb-2 ps-1 fw-bold" for="chooseCompany">Choose Company:</label>
-                                                    <select class="chooseCompany form-control me-2" name="chooseCompany" id="chooseCompany">
+                                                    <select class="chooseCompany form-control me-2" name="chooseCompany" job="Choose Company Field" id="chooseCompany">
                                                         <option value="" disabled selected hidden>Choose Company</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -79,7 +79,7 @@
                                                 </div>
                                                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                                                     <label class="pb-2 ps-1 fw-bold" for="chooseCustomer">Choose Customer:<span class="text-danger fw-bolder">*</span></label>
-                                                    <select class="form-control me-2" name="chooseCustomer" id="chooseCustomer" required>
+                                                    <select class="form-control me-2" name="chooseCustomer" job="Choose Customer Field" id="chooseCustomer" required>
                                                         <option value="" disabled selected hidden>Choose Customer</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -88,7 +88,7 @@
                                                 </div>
                                                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                                                     <label class="pb-2 ps-1 fw-bold" for="selectBranch">Select Branch:<span class="text-danger fw-bolder">*</span></label>
-                                                    <select class="form-control me-2" name="selectBranch" id="selectBranch" required>
+                                                    <select class="form-control me-2" name="selectBranch" job="Select Branch Field" id="selectBranch" required>
                                                         <option value="" disabled selected hidden>Select Branch</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -97,7 +97,7 @@
                                                 </div>
                                                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                                                     <label class="pb-2 ps-1 fw-bold" for="selectSalesPerson">Select Sales Person:</label>
-                                                    <select class="form-control me-2" name="selectSalesPerson" id="selectSalesPerson">
+                                                    <select class="form-control me-2" name="selectSalesPerson" job="Select Sales Person Field" id="selectSalesPerson">
                                                         <option value="" disabled selected hidden>Select Sales Person</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -125,7 +125,7 @@
                                                         <div class="row mb-2 row-data" data-row-index="0">
                                                             <div class="col-sm-12 col-md-6 col-lg-3 position-relative mb-3">
                                                                 <label class="pb-2 ps-1 fw-bold" for="fromCountry">From:<span class="text-danger fw-bolder">*</span></label>
-                                                                <select class="fromCountry form-control me-2" name="fromCountry" id="fromCountry" required>
+                                                                <select class="fromCountry form-control me-2" name="fromCountry" job="From Field" id="fromCountry" required>
                                                                     <option value="" disabled selected hidden>From</option>
                                                                     <option value="cairo">cairo</option>
                                                                     <option value="Alex">Alex</option>
@@ -137,7 +137,7 @@
                                                             </button>
                                                             <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                                                                 <label class="pb-2 ps-1 fw-bold" for="toCountry">To:<span class="text-danger fw-bolder">*</span></label>
-                                                                <select class="toCountry form-control me-2" name="toCountry" id="toCountry" required>
+                                                                <select class="toCountry form-control me-2" name="toCountry" job="To Field" id="toCountry" required>
                                                                     <option value="" disabled selected hidden>To</option>
                                                                     <option value="cairo">cairo</option>
                                                                     <option value="Alex">Alex</option>
@@ -148,7 +148,7 @@
                                                                 <div class="d-flex dates-row">
                                                                     <div class="col-7 position-relative p-0">
                                                                         <label class="pb-2 ms-3 fw-bold" for="fromDate">Departure:<span class="text-danger fw-bolder">*</span></label>
-                                                                        <span class="fromDateValue w-fit-content ms-4 position-absolute"></span>
+                                                                        <span class="fromDateValue w-fit-content ms-2 position-absolute"></span>
                                                                     </div>
                                                                     <div class="col-5 position-relative px-0">
                                                                         <label class="toDateLabel pb-2 me-5 fw-bold" for="toDate">Return:<span class="text-danger fw-bolder">*</span></label>
@@ -157,7 +157,7 @@
                                                                 </div>
                                                                 <div class="fromDate  p-0">
                                                                     <div class="d-flex flatpickr align-items-center position-relative">
-                                                                        <input class="fromDate form-control text-light" type="text" placeholder="Select Date" name="fromDate" value="" id="fromDate" data-input required>                                                                
+                                                                        <input class="fromDate form-control text-light" type="text" placeholder="Select Date" name="fromDate" job="Dates Field" value="" id="fromDate" data-input required>                                                                
                                                                         <a class="input-button calender-btn position-absolute" title="toggle" data-toggle>
                                                                             <i class="fa-regular fa-calendar text-dark fs-5"></i>
                                                                         </a>
@@ -302,14 +302,14 @@
                                 <div class="multiCityData" id="multiCityData"></div>
                             </div>
                             <div class="d-flex justify-content-center">
-                              <a class="btn print-btn btn-outline-primary d-print-none print-none" id="print-btn">print</a>
+                                <a class="btn print-btn btn-outline-primary d-print-none print-none" id="print-btn">print</a>
                           </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-      </div>
+    </div>
 </body>
 <script src="jquery-3.7.1.js"></script>
 <script src="wizard.js"></script>

@@ -7,16 +7,6 @@ $(document).ready(function () {
 		return new bootstrap.Tooltip(tooltipTriggerEl);
 	});
 
-	//Advance Tabs
-	// $(".next").click(function () {
-	// 	const nextTabLinkEl = $(".nav-tabs .active")
-	// 		.closest("li")
-	// 		.next("li")
-	// 		.find("a")[0];
-	// 	const nextTab = new bootstrap.Tab(nextTabLinkEl);
-	// 	nextTab.show();
-	// });
-
 	$(".previous").click(function () {
 		const prevTabLinkEl = $(".nav-tabs .active")
 			.closest("li")

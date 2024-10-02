@@ -2,6 +2,11 @@
     width: 14%;
 }
 
+.text-align-center{
+	text-align: -webkit-center;
+}
+
+
 .w-fit-content{
     width: fit-content;
 }
@@ -170,6 +175,10 @@ input.PassengersDataInput::placeholder{
 	border-top: 3px solid teal
 }
 
+.empty-fields-ul .swal2-html-container li{
+	margin-left: 6rem;
+}
+
 
 /* Fade out Effect */
 
@@ -252,6 +261,9 @@ input.PassengersDataInput::placeholder{
 
 
 @media (max-width: 576px){
+	.empty-fields-ul .swal2-html-container li{
+		margin-left: 0rem;
+	}
 
 	.TripDetailsTitle{
 		position: relative;
@@ -325,6 +337,10 @@ input.PassengersDataInput::placeholder{
 
 @media (min-width: 768px){
 
+	.text-align-center{
+		text-align: inherit;
+	}
+
 	.TripDetailsTitle{
 		position: relative;
 		left: 3%;
@@ -363,6 +379,10 @@ input.PassengersDataInput::placeholder{
 
 @media (min-width: 992px){
 
+	.text-align-center{
+		text-align: inherit;
+	}
+
 	.TripDetailsTitle{
 		position: relative;
 		left: 5%;
@@ -399,6 +419,11 @@ input.PassengersDataInput::placeholder{
 
 
 @media (min-width: 1200px){
+	
+	.text-align-center{
+		text-align: inherit;
+	}
+
 
 	.TripDetailsTitle{
 		position: relative;
@@ -433,5 +458,15 @@ input.PassengersDataInput::placeholder{
 	}
 }
 
+
+/* print styles */
+@media print {
+	.col-sm-12 {
+		max-width: 25%;
+	}
+	.text-align-center{
+		text-align: inherit;
+	}
+}
 
 

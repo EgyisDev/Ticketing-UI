@@ -95,6 +95,7 @@ function removePassenger(type) {
 const toggleDateInputs = (value) => {
     if (value === "OneWay"){
         rowData.classList.add("d-none");
+        rowData.replaceChildren("")
         addRowdiv.classList.add("d-none")
         tripeType = "OneWay"
         flatpickr(".fromDate", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
@@ -106,6 +107,7 @@ const toggleDateInputs = (value) => {
         updateFlightInfo()
     } else if (value === "roundTrip") {
         rowData.classList.add("d-none");
+        rowData.replaceChildren("")
         addRowdiv.classList.add("d-none")
         tripeType = "roundTrip"
         flatpickr(".fromDate", {mode: "range",minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
@@ -134,7 +136,7 @@ const toggleDateInputs = (value) => {
 const createRowData = (rowIndex) => `
 <div class="row align-items-center mb-2 row-data position-relative" data-row-index="${rowIndex}">
     <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
-        <select class="fromCountry form-control me-2" name="fromCountry" required>
+        <select class="fromCountry form-control me-2" name="fromCountry" job="From Field" required>
             <option value="" disabled selected hidden>From</option>
             <option value="cairo">Cairo</option>
             <option value="Alex">Alex</option>
@@ -145,7 +147,7 @@ const createRowData = (rowIndex) => `
         <i class="fa-solid fa-arrow-right-arrow-left"></i>
     </button>
     <div class="col-sm-12 col-md-6 col-lg-3 mb-3 mb-lg-0">
-        <select class="toCountry form-control me-2" name="toCountry" required>
+        <select class="toCountry form-control me-2" name="toCountry" job="To Field" required>
             <option value="" disabled selected hidden>To</option>
             <option value="cairo">Cairo</option>
             <option value="Alex">Alex</option>
@@ -155,7 +157,7 @@ const createRowData = (rowIndex) => `
     <div class="col-sm-12 col-md-6 col-lg-3 px-lg-0 mb-3 mb-lg-0">
         <div class="fromDate">
             <div class="d-flex flatpickr align-items-center position-relative">
-            <input class="fromDate flatpickr-input form-control" type="text" placeholder="Select Date" name="fromDate" value=""  data-input required>                                        
+            <input class="fromDate flatpickr-input form-control" type="text" placeholder="Select Date" name="fromDate" job="Dates Field" value=""  data-input required>                                        
         
             <a class="input-button calender-btn position-absolute" title="toggle" data-toggle>
                 <i class="fa-regular fa-calendar text-dark fs-5"></i>
@@ -428,11 +430,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -441,27 +443,27 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
 
             <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
                     <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
 
@@ -481,7 +483,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <div class="d-flex flex-column mt-2">
                     <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
                     <div class="AttachmentsContainer w-75">
-                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
                     </div>
                 </div>
                 <div>
@@ -514,11 +516,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -527,27 +529,27 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
 
             <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
                     <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
 
@@ -567,7 +569,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <div class="d-flex flex-column mt-2">
                     <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
                     <div class="AttachmentsContainer w-75">
-                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
                     </div>
                 </div>
                 <div>
@@ -604,11 +606,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -617,27 +619,27 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
 
             <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
                     <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
 
@@ -657,7 +659,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <div class="d-flex flex-column mt-2">
                     <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
                     <div class="AttachmentsContainer w-75">
-                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
                     </div>
                 </div>
                 <div>
@@ -696,11 +698,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -709,27 +711,27 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
 
             <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
                     <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
 
@@ -749,7 +751,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <div class="d-flex flex-column mt-2">
                     <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
                     <div class="AttachmentsContainer w-75">
-                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
                     </div>
                 </div>
                 <div>
@@ -782,70 +784,70 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <i class="fa-solid fa-trash p-3"></i>
                 </div>
                 <div class="dataInputs">
-                    <div class="p-1">
-                    <div class="row gy-3">
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
-                    <option value="" disabled selected hidden>Choose Supplier</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                        <div class="p-1">
+                        <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
+                        <option value="" disabled selected hidden>Choose Supplier</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
-            </div>
-        </div>
-
-        <div class="row gy-3">
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
-                <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
-            </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
-                <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="d-flex align-items-start flex-column">
-                <label class="p-2 font-weight-bold" for="notes">Notes:</label>
-                <div class="notesContainer w-75">
-                    <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
-            </div>
-        </div>
-    
-        <div class="row">
-            <div class="col">
-                <div class="d-flex flex-column mt-2">
-                <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
-                <div class="AttachmentsContainer w-75">
-                    <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+
+            <div class="row gy-3">
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
+                    <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
+                    <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
-            <div>
-        </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-start flex-column">
+                    <label class="p-2 font-weight-bold" for="notes">Notes:</label>
+                    <div class="notesContainer w-75">
+                        <textarea name="notes" class="form-control" id="notes${generatedId}" placeholder="Notes"></textarea>
                     </div>
                 </div>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-column mt-2">
+                    <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
+                    <div class="AttachmentsContainer w-75">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                    </div>
+                </div>
+                <div>
+            </div>
+                        </div>
+                    </div>
                 <div class="hidenFields">
                     <input type="hidden" id="type${generatedId}" value="child">
                     <input type="hidden" id="CompanyName${generatedId}" value="${CompanyName}">
@@ -876,11 +878,11 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="name">Name: <span class="text-danger font-weight-bolder">*</span></label>  
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" placeholder="Name">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="text" id="name${generatedId}" name="name" job="Name Field" placeholder="Name">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="chooseSupplier">Choose Supplier: <span class="text-danger font-weight-bolder">*</span></label>
-                    <select class="p-2 form-control" name="chooseSupplier" id="chooseSupplier${generatedId}" required>
+                    <select class="p-2 form-control" name="chooseSupplier" job="Choose Supplier Field" id="chooseSupplier${generatedId}" required>
                         <option value="" disabled selected hidden>Choose Supplier</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -889,27 +891,27 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="costPrice">Cost Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" placeholder="Cost Price" id="costPrice${generatedId}">
+                    <input autocomplete="off" class="p-2 form-control costPrice" type="number" min="0" name="costPrice" job="Cost Price Field" placeholder="Cost Price" id="costPrice${generatedId}">
 
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="sellingPrice">Selling Price: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
+                    <input autocomplete="off" class="p-2 form-control sellingPrice" type="number" min="0" name="sellingPrice" job="Selling Price Field" id="sellingPrice${generatedId}" placeholder="Selling Price">                                       
                 </div>
             </div>
 
             <div class="row gy-3">
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="theGate">The Gate: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" id="theGate${generatedId}" placeholder="The Gate">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="theGate" job="The Gate Field" id="theGate${generatedId}" placeholder="The Gate">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3 pr-0">
                     <label class="pb-0 ps-1 font-weight-bold" for="AirplaneNumber">Airplane Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="AirplaneNumber" job="Airplane Number Field" id="AirplaneNumber${generatedId}" placeholder="Airplane Number">
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mb-3">
                     <label class="pb-0 ps-1 font-weight-bold" for="seatNumber">Seat Number: <span class="text-danger font-weight-bolder">*</span></label>
-                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" id="seatNumber${generatedId}" placeholder="Seat Number">
+                    <input autocomplete="off" class="p-2 form-control" type="text" name="seatNumber" job="Seat Number Field" id="seatNumber${generatedId}" placeholder="Seat Number">
                 </div>
             </div>
 
@@ -929,7 +931,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <div class="d-flex flex-column mt-2">
                     <label class="pb-2 ps-2 font-weight-bold" for="attachments">Attachments: <span class="text-danger font-weight-bolder">*</span></label>
                     <div class="AttachmentsContainer w-75">
-                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
+                        <input autocomplete="off" class="form-control-file mb-3" autocomplete="off" type="file" job="Attachments Field" name="attachments" id="attachments${generatedId}" placeholder="Attachments">
                     </div>
                 </div>
                 <div>
@@ -1117,14 +1119,14 @@ addTableRowBtn.addEventListener("click", function() {
     const generatedId = Math.floor(Math.random()*1000)
     row.innerHTML = `
             <td>
-            <select class="treasury form-control me-2" name="treasury" id="treasury${generatedId}">
+            <select class="treasury form-control me-2" name="treasury" job="Treasury Field" id="treasury${generatedId}">
                 <option value="" disabled selected hidden>Select From The List</option>
                 <option value="cairo">cairo</option>
                 <option value="Alex">Alex</option>
                 <option value="Aswan">Aswan</option>
             </select>
         </td>     
-        <td><input autocomplete="off" type="number" class="amount form-control w-100" name="amount" autocomplete="off" min="0" id="amount${generatedId}"></td>
+        <td><input autocomplete="off" type="number" job="Amount Field" class="amount form-control w-100" name="amount" autocomplete="off" min="0" id="amount${generatedId}"></td>
         <td><input autocomplete="off" type="text" class="note form-control w-100" name="note" autocomplete="off" id="note${generatedId}"></td>
         <td class="background-transparent">
             <div class="removeRow">
@@ -1224,6 +1226,26 @@ function updateAmountValue(){
     })
 }
 
+let ul = ""
+let li =""
+function emptyfieldsFunction(){
+    emptyFields = document.querySelectorAll(".is-invalid")
+    ul=""
+    li =""
+    emptyFields.forEach(emptyfield=>{
+        if(!li.includes(emptyfield.getAttribute("job"))){
+            li += `<li style = "width: fit-content">${emptyfield.getAttribute("job")}</li>`
+        }
+    })
+    ul = `<ul style="text-align: left">${li}</ul>`
+    Swal.fire({
+        title: "Error",
+        html: `The following (field)s are required: ${ul}`,
+        icon: "error",
+        customClass: "empty-fields-ul"
+    });
+}
+
 
     const nextToFlightInfoBtn = document.getElementById('nextToFlightInfo');
     const finishBtn = document.querySelector('.finish-btn');
@@ -1238,11 +1260,6 @@ function updateAmountValue(){
             if (select.value === "" || select.value == null) {
                 isValid = false;
                 select.classList.add('is-invalid');
-                Swal.fire({
-                    title: "Error",
-                    text: `You Must fill This Fields`,
-                    icon: "error",
-                });
             } else {
                 select.classList.remove('is-invalid');
             }
@@ -1257,13 +1274,15 @@ function updateAmountValue(){
                 input.classList.add('is-invalid');
             }else{
                 input.classList.remove('is-invalid')
-                isValid = true;
             }
         });
         const dateArray = fromDate.value.trim().split(" ")
         if((tripeType == "roundTrip" || tripeType == "Round Trip") && dateArray.length == 1){
             document.querySelector('.fromDate.flatpickr-input').classList.add('is-invalid');
             isValid = false;
+        }
+        if(!isValid){
+            emptyfieldsFunction()
         }
         return isValid;
     }
@@ -1295,6 +1314,10 @@ function updateAmountValue(){
             }
         });
 
+        if(!isValid){
+            emptyfieldsFunction()
+        }
+
         return isValid;
     }
 
@@ -1325,6 +1348,10 @@ function updateAmountValue(){
                 amount.classList.remove('is-invalid');
             }
         });
+
+        if(!isValid){
+            emptyfieldsFunction()
+        }
     
         return isValid;
     }
@@ -1650,31 +1677,31 @@ function finish(finalData){
         const data = `
                                 <div class="row">
                                 ${CompanyName != null  ? 
-                                    `<div class="col-sm-12 col-md-6 col-lg-3">
+                                    `<div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Company Name: </span>${CompanyName}</p>
                                     </div>` : ""}
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Customer Name: </span>${CustomerName}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Branch Name: </span>${branch}</p>
                                     </div>
                                     ${salesPerson != null  ? `
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                             <p class="w-fit-content"><span class="font-weight-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Trip Type: </span> ${tripeType}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Number of Passengeres: </span>${passengersSum}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">File Number: </span>${fileNumberr}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Reservation Numbers: </span>${reservationNumbers}</p>
                                     </div>
                                 </div>
@@ -1689,45 +1716,45 @@ function finish(finalData){
         `
                                         <div class="row">
                                         ${CompanyName != null  ? 
-                                            `<div class="col-sm-12 col-md-6 col-lg-3">
+                                            `<div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                                 <p class="w-fit-content"><span class="font-weight-bold">Company Name: </span>${CompanyName}</p>
                                             </div>` : ""}
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Customer Name: </span>${CustomerName}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Branch Name: </span>${branch}</p>
                                     </div>
                                     ${salesPerson != null  ? `
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                             <p class="w-fit-content"><span class="font-weight-bold">Sales Person: </span>${salesPerson}</p>
                                         </div>`: ""}
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Trip Type: </span> ${tripeType}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">From: </span>${fromCountry}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">To: </span>${toCountry}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Departure Date: </span>${departureDate}</p>
                                     </div>
                                 </div>
                                 <div class="row">
-                                            ${tripeType === "Round Trip" ? `<div class="col-sm-12 col-md-6 col-lg-3">
+                                            ${tripeType === "Round Trip" ? `<div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Return Date: </span>${returnDate}</p>
                                     </div>` : ""}
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Number of Passengeres: </span>${passengersSum}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-3">
+                                    <div class="col-sm-12 col-md-6 col-lg-3 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">File Number: </span>${fileNumberr}</p>
                                     </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="col-sm-12 col-md-6 col-lg-4 text-align-center">
                                         <p class="w-fit-content"><span class="font-weight-bold">Reservation Numbers: </span>${reservationNumbers}</p>
                                     </div>
                                     </div>`
