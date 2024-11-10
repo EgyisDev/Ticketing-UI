@@ -2,10 +2,6 @@
     width: 14%;
 }
 
-.text-align-center{
-	text-align: -webkit-center;
-}
-
 
 .w-fit-content{
     width: fit-content;
@@ -152,12 +148,12 @@ input.PassengersDataInput::placeholder{
     color: green;
 }
 
-.fromDate , .passengersDataInput{
+.startDate , .passengersDataInput{
 	background-color: white !important;
 }
 
 
-.fromDateValue{
+.startDateValue{
 	bottom: -30px;
 	left: 5px;
 	z-index: 5;
@@ -261,6 +257,10 @@ input.PassengersDataInput::placeholder{
 
 
 @media (max-width: 576px){
+	.data-summary .w-fit-content{
+		width: auto !important;
+	}
+
 	.empty-fields-ul .swal2-html-container li{
 		margin-left: 0rem;
 	}
@@ -279,7 +279,7 @@ input.PassengersDataInput::placeholder{
 	}
 	.confermationSectionTitle{
 		position: relative;
-		left: 57%;
+		left: 51%;
 	}
 	.exchange{
 		position: absolute;
@@ -287,6 +287,7 @@ input.PassengersDataInput::placeholder{
 		left: 50%;
 		height: fit-content;
 		width: fit-content;
+		z-index: 5;
 		transform: rotate(90deg);
 	}
 
@@ -298,6 +299,10 @@ input.PassengersDataInput::placeholder{
 	}
 }
 @media (min-width: 576px){
+
+	.data-summary .w-fit-content{
+		width: auto !important;
+	}
 
 	.TripDetailsTitle{
 		position: relative;
@@ -324,6 +329,7 @@ input.PassengersDataInput::placeholder{
         left: 50%;
 		height: fit-content;
 		width: fit-content;
+		z-index: 5;
 		transform: rotate(90deg);
 	}
 
@@ -331,14 +337,13 @@ input.PassengersDataInput::placeholder{
 		position: absolute;
 		top: 37px;
 		left: 50%;
-		z-index: 5;
 	}
 }
 
 @media (min-width: 768px){
 
-	.text-align-center{
-		text-align: inherit;
+	.data-summary .w-fit-content{
+		width: auto !important;
 	}
 
 	.TripDetailsTitle{
@@ -367,6 +372,7 @@ input.PassengersDataInput::placeholder{
         left: 320px;
 		height: fit-content;
 		width: fit-content;
+		z-index: 5;
 		transform: rotate(0deg);
 	}
 
@@ -379,8 +385,8 @@ input.PassengersDataInput::placeholder{
 
 @media (min-width: 992px){
 
-	.text-align-center{
-		text-align: inherit;
+	.data-summary .w-fit-content{
+		width: fit-content !important;
 	}
 
 	.TripDetailsTitle{
@@ -419,11 +425,10 @@ input.PassengersDataInput::placeholder{
 
 
 @media (min-width: 1200px){
-	
-	.text-align-center{
-		text-align: inherit;
-	}
 
+	.data-summary .w-fit-content{
+		width: fit-content !important;
+	}
 
 	.TripDetailsTitle{
 		position: relative;
@@ -464,8 +469,8 @@ input.PassengersDataInput::placeholder{
 	.col-sm-12 {
 		max-width: 25%;
 	}
-	.text-align-center{
-		text-align: inherit;
+	.data-summary .w-fit-content{
+		width: fit-content !important;
 	}
 }
 
