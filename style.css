@@ -148,12 +148,12 @@ input.PassengersDataInput::placeholder{
     color: green;
 }
 
-.flatpickr , .passengersDataInput{
+.flatpickrDate , .passengersDataInput{
 	background-color: white !important;
 }
 
 
-.flatpickrValue{
+.flatpickrDateValue{
 	bottom: -30px;
 	left: 5px;
 	z-index: 5;

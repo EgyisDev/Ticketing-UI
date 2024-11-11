@@ -3,7 +3,7 @@ const passengersDataList = document.getElementById("passengersDataList");
 const adultsCounterText = document.getElementById("adultsCounter");
 const childsCounterText = document.getElementById("childsCounter");
 const infantCounterText = document.getElementById("infantsCounter");
-const flatpickr = document.getElementById("flatpickr");
+const flatpickrDate = document.getElementById("flatpickrDate");
 const adultsController = document.querySelector(".adults-controller");
 const childsController = document.querySelector(".childs-controller");
 const infantsController = document.querySelector(".infants-controller");
@@ -98,11 +98,11 @@ const toggleDateInputs = (value) => {
         rowData.replaceChildren("")
         addRowdiv.classList.add("d-none")
         tripeType = "OneWay"
-        flatpickr(".flatpickr", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+        flatpickr(".flatpickrDate", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
         document.querySelector(".toDateLabel").classList.add("d-none")
-        flatpickr.value = ""
-        flatpickr.placeholder = "Select Date"
-        document.querySelector('.flatpickrValue').innerHTML =  ""
+        flatpickrDate.value = ""
+        flatpickrDate.placeholder = "Select Date"
+        document.querySelector('.flatpickrDateValue').innerHTML =  ""
         document.querySelector('.toDateValue').innerHTML =  ""
         updateFlightInfo()
     } else if (value === "roundTrip") {
@@ -110,20 +110,20 @@ const toggleDateInputs = (value) => {
         rowData.replaceChildren("")
         addRowdiv.classList.add("d-none")
         tripeType = "roundTrip"
-        flatpickr(".flatpickr", {mode: "range",minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+        flatpickr(".flatpickrDate", {mode: "range",minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
         document.querySelector(".toDateLabel").classList.remove("d-none")
-        flatpickr.value = ""
-        flatpickr.placeholder = "Select Date"
-        document.querySelector('.flatpickrValue').innerHTML =  ""
+        flatpickrDate.value = ""
+        flatpickrDate.placeholder = "Select Date"
+        document.querySelector('.flatpickrDateValue').innerHTML =  ""
         document.querySelector('.toDateValue').innerHTML =  ""
         updateFlightInfo()
     } else if (value === "multiCity") {
         rowData.classList.remove("d-none");
         addRowdiv.classList.remove("d-none")
         rowData.innerHTML = createRowData(1);
-        flatpickr.value = ""
-        flatpickr.placeholder = "Select Date"
-        document.querySelector('.flatpickrValue').innerHTML =  ""
+        flatpickrDate.value = ""
+        flatpickrDate.placeholder = "Select Date"
+        document.querySelector('.flatpickrDateValue').innerHTML =  ""
         document.querySelector('.toDateValue').innerHTML =  ""
         tripeType = "multiCity"
         document.querySelector(".toDateLabel").classList.add("d-none")
@@ -155,9 +155,9 @@ const createRowData = (rowIndex) => `
         </select>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-3 px-lg-0 mb-3 mb-lg-0">
-        <div class="flatpickr">
+        <div class="flatpickrDate">
             <div class="d-flex flatpickr align-items-center position-relative">
-            <input class="flatpickr flatpickr-input form-control" type="text" placeholder="Select Date" name="flatpickr" job="Dates Field" value=""  data-input required>                                        
+            <input class="flatpickrDate flatpickr-input form-control" type="text" placeholder="Select Date" name="flatpickrDate" job="Dates Field" value=""  data-input required>                                        
         
             <a class="input-button calender-btn position-absolute" title="toggle" data-toggle>
                 <i class="fa-regular fa-calendar text-dark fs-5"></i>
@@ -264,14 +264,14 @@ function updateFlightInfo(){
     fromCountry = document.getElementById("fromCountry").value;
     toCountry = document.getElementById("toCountry").value;
     let rowCount = document.querySelectorAll('.row-data');
-    let flatpickr = document.getElementById("flatpickr").value;
+    let flatpickrDate = document.getElementById("flatpickrDate").value;
     let adulti = document.querySelectorAll('#passengersRow .passengerType[type="adult"]').length;
     let childi = document.querySelectorAll('#passengersRow .passengerType[type="child"]').length;
     let infanti = document.querySelectorAll('#passengersRow .passengerType[type="infant"]').length;
     
 
     flightInfo.innerHTML = '';
-    const dateArray = flatpickr.trim().split(" ")
+    const dateArray = flatpickrDate.trim().split(" ")
     const departureDate = dateArray[0]
     let returnDate = dateArray[2]
     if(returnDate == undefined){
@@ -306,11 +306,11 @@ function updateFlightInfo(){
             </div>`
         rowCount.forEach(row =>{
             let tripe = {}
-            flatpickr(".flatpickr", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
+            flatpickr(".flatpickrDate", {minDate: "today" , dateFormat: "d-m-Y" , wrap: true})
             tripe = {
                 fromCountry: row.querySelector(`.fromCountry`).value,
                 toCountry: row.querySelector(`.toCountry`).value,
-                flatpickr: row.querySelector(`.flatpickr.flatpickr-input`).value,
+                flatpickrDate: row.querySelector(`.flatpickrDate.flatpickr-input`).value,
             };
             headerArray.push(tripe)
 
@@ -323,7 +323,7 @@ function updateFlightInfo(){
                         <p class="w-auto m-0 header-text"><span class="font-weight-bold">To: </span>${tripe.toCountry}</p>
                     </div>
                     <div class="col-sm-4 col-md-3 col-lg-3 col-4">
-                        <p class="w-auto m-0 header-text"><span class="font-weight-bold">Departure Date: </span>${tripe.flatpickr}</p>
+                        <p class="w-auto m-0 header-text"><span class="font-weight-bold">Departure Date: </span>${tripe.flatpickrDate}</p>
                     </div>
             </div>
             `;
@@ -338,7 +338,7 @@ function updateFlightInfo(){
                                         <p class="w-fit-content"><span class="font-weight-bold">To: </span>${tripe.toCountry}</p>
                                     </div>
                                     <div class="col-sm-4 col-md-3 col-lg-2 col-4">
-                                        <p class="w-fit-content"><span class="font-weight-bold">Departure Date: </span>${tripe.flatpickr}</p>
+                                        <p class="w-fit-content"><span class="font-weight-bold">Departure Date: </span>${tripe.flatpickrDate}</p>
                                     </div>
                                 </div>
             `
@@ -397,12 +397,12 @@ function updateFlightInfo(){
         tripeType = "roundTrip"
     }
 
-        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, flatpickr, passengersSum, multicityDataList , adulti , childi , infanti);
+        generatePassengerData(CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, flatpickrDate, passengersSum, multicityDataList , adulti , childi , infanti);
 };
 
 
 
-const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, flatpickr, passengersSum  , multicityDataList , adulti , childi , infanti) => {
+const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, fromCountry, toCountry, flatpickrDate, passengersSum  , multicityDataList , adulti , childi , infanti) => {
     let cartoona = '';
     let itrationBox = "";
     let totalCostPrice = 0;
@@ -415,7 +415,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
             itrationBox += `
             <input type="hidden" id="fromCountry${generatedId}" value="${multicityDataList[i].fromCountry}">
             <input type="hidden" id="toCountry${generatedId}" value="${multicityDataList[i].toCountry}">
-            <input type="hidden" id="flatpickr${generatedId}" value="${multicityDataList[i].flatpickr}">
+            <input type="hidden" id="flatpickrDate${generatedId}" value="${multicityDataList[i].flatpickrDate}">
             `;
         }
             if(adultscounter >= 0 && adultscounter > adulti){
@@ -585,7 +585,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
                         <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                         <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
-                        <input type="hidden" id="flatpickr${generatedId}" value="${flatpickr}">
+                        <input type="hidden" id="flatpickrDate${generatedId}" value="${flatpickrDate}">
                         <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                         ${itrationBox}
                     </div>
@@ -675,7 +675,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                         <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
                         <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                         <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
-                        <input type="hidden" id="flatpickr${generatedId}" value="${flatpickr}">
+                        <input type="hidden" id="flatpickrDate${generatedId}" value="${flatpickrDate}">
                         <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                         ${itrationBox}
                     </div>
@@ -767,7 +767,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
                     <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                     <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
-                    <input type="hidden" id="flatpickr${generatedId}" value="${flatpickr}">
+                    <input type="hidden" id="flatpickrDate${generatedId}" value="${flatpickrDate}">
                     <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                 </div>
             </div>
@@ -857,7 +857,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                     <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
                     <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                     <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
-                    <input type="hidden" id="flatpickr${generatedId}" value="${flatpickr}">
+                    <input type="hidden" id="flatpickrDate${generatedId}" value="${flatpickrDate}">
                     <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                     ${itrationBox}
                 </div>
@@ -947,7 +947,7 @@ const generatePassengerData = (CompanyName, CustomerName, branch, salesPerson, f
                                 <input type="hidden" id="tripeType${generatedId}" value="${tripeType}">
                                 <input type="hidden" id="fromCountry${generatedId}" value="${fromCountry}">
                                 <input type="hidden" id="toCountry${generatedId}" value="${toCountry}">
-                                <input type="hidden" id="flatpickr${generatedId}" value="${flatpickr}">
+                                <input type="hidden" id="flatpickrDate${generatedId}" value="${flatpickrDate}">
                                 <input type="hidden" id="passengersCount${generatedId}" value="${passengersSum}">
                             </div>
                         </div>
@@ -1159,7 +1159,7 @@ function getMultiCityTrip(){
             tripe = {
                 fromCountry: row.querySelector(`.fromCountry`).value,
                 toCountry: row.querySelector(`.toCountry`).value,
-                departureDate: row.querySelector(`.flatpickr.flatpickr-input`).value,
+                departureDate: row.querySelector(`.flatpickrDate.flatpickr-input`).value,
             };
             multicityDataList.push(tripe);
         })
@@ -1269,16 +1269,16 @@ function emptyfieldsFunction(){
             if ((tripeType == "roundTrip" || tripeType == "Round Trip") && (input.value == "" || input.value == null)) {
                 isValid = false;
                 input.classList.add('is-invalid');
-            }else if((tripeType == "OneWay" || tripeType == "One Way" || tripeType == "multiCity" ) && (flatpickr.value == "") ){
+            }else if((tripeType == "OneWay" || tripeType == "One Way" || tripeType == "multiCity" ) && (flatpickrDate.value == "") ){
                 isValid = false;
                 input.classList.add('is-invalid');
             }else{
                 input.classList.remove('is-invalid')
             }
         });
-        const dateArray = flatpickr.value.trim().split(" ")
+        const dateArray = flatpickrDate.value.trim().split(" ")
         if((tripeType == "roundTrip" || tripeType == "Round Trip") && dateArray.length == 1){
-            document.querySelector('.flatpickr.flatpickr-input').classList.add('is-invalid');
+            document.querySelector('.flatpickrDate.flatpickr-input').classList.add('is-invalid');
             isValid = false;
         }
         if(!isValid){
@@ -1356,19 +1356,19 @@ function emptyfieldsFunction(){
         return isValid;
     }
 
-    flatpickr.addEventListener("change", function(){
-            let dateArray = flatpickr.value.split(" ")
+    flatpickrDate.addEventListener("change", function(){
+            let dateArray = flatpickrDate.value.split(" ")
             if(dateArray[2]==undefined){
                 dateArray[2] = ""
             }
             const departureDate = dateArray[0]
-            document.querySelector('.flatpickrValue').innerHTML = dateArray[0]
+            document.querySelector('.flatpickrDateValue').innerHTML = dateArray[0]
             const returnDate = dateArray[2]
             document.querySelector('.toDateValue').innerHTML = dateArray[2]
-            if((document.querySelector('.flatpickrValue').innerHTML=="") && (flatpickr.value == "" || flatpickr.value == null || flatpickr.value == undefined)){
-                flatpickr.placeholder = "Select Date";
+            if((document.querySelector('.flatpickrDateValue').innerHTML=="") && (flatpickrDate.value == "" || flatpickrDate.value == null || flatpickrDate.value == undefined)){
+                flatpickrDate.placeholder = "Select Date";
             }else{
-                flatpickr.placeholder = "";
+                flatpickrDate.placeholder = "";
             }
     })
 
@@ -1403,7 +1403,7 @@ function emptyfieldsFunction(){
             const fileNumberr = fileData.FileNumber;
             const reservationNumbers = [];
             paymentScheduleList = []
-            let dateArray = flatpickr.value.split(" ")
+            let dateArray = flatpickrDate.value.split(" ")
             if(dateArray[2]==undefined){
                 dateArray[2] = ""
             }
@@ -1493,7 +1493,7 @@ function addPassengerToFile(){
         const salesPerson = document.getElementById("selectSalesPerson").value || null;
         const fromCountry = document.getElementById("fromCountry").value ;
         const toCountry = document.getElementById("toCountry").value ;
-        const dateArray = flatpickr.value.trim().split(" ")
+        const dateArray = flatpickrDate.value.trim().split(" ")
         const departureDate = dateArray[0]        
         let returnDate = dateArray[2]
         if(returnDate == undefined){
@@ -1574,7 +1574,7 @@ function getFinalData() {
         const salesPerson = document.getElementById("selectSalesPerson").value || null;
         const fromCountry = document.getElementById("fromCountry").value ;
         const toCountry = document.getElementById("toCountry").value ;
-        const dateArray = flatpickr.value.trim().split(" ")
+        const dateArray = flatpickrDate.value.trim().split(" ")
         const departureDate = dateArray[0]        
         let returnDate = dateArray[2]
         if(returnDate == undefined){
@@ -1649,7 +1649,7 @@ function finish(finalData){
     const salesPerson = document.getElementById("selectSalesPerson").value || null;
     const fromCountry = document.getElementById("fromCountry").value ;
     const toCountry = document.getElementById("toCountry").value ;
-    const dateArray = flatpickr.value.trim().split(" ")
+    const dateArray = flatpickrDate.value.trim().split(" ")
     const departureDate = dateArray[0]     
     const fileData = finalData;
     const fileNumberr = fileData.FileNumber;
